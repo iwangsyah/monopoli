@@ -1,217 +1,192 @@
 import React, {Component} from 'react';
-import {ScrollView, TouchableOpacity, StyleSheet, Text, View} from 'react-native';
+
+import {StyleSheet, Text, TouchableOpacity, View, ScrollView, Alert} from 'react-native';
+import Sound from 'react-native-sound';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollContainer: {},
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingTop: 30,
+    padding: 20,
+    textAlign: 'center',
+    backgroundColor: 'rgba(240,240,240,1)',
+  },
+  button: {
+    fontSize: 20,
+    backgroundColor: 'rgba(220,220,220,1)',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(80,80,80,0.5)',
+    overflow: 'hidden',
+    padding: 7,
+  },
+  header: {
+    textAlign: 'left',
+  },
+  feature: {
+    flexDirection: 'row',
+    padding: 10,
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: 'rgb(180,180,180)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgb(230,230,230)',
+  },
+});
+
+const Button = ({title, onPress}) => (
+  <TouchableOpacity onPress={onPress}>
+    <Text style={styles.button}>{title}</Text>
+  </TouchableOpacity>
+);
+
+const Header = ({children, style}) => <Text style={[styles.header, style]}>{children}</Text>;
+
+const Feature = ({title, onPress, description, buttonLabel = 'PLAY', status}) => (
+  <View style={styles.feature}>
+    <Header style={{flex: 1}}>{title}</Header>
+    {status ? <Text style={{padding: 5}}>{resultIcons[status] || ''}</Text> : null}
+    <Button title={buttonLabel} onPress={onPress} />
+  </View>
+);
+
+const resultIcons = {
+  '': '',
+  pending: '?',
+  playing: '\u25B6',
+  win: '\u2713',
+  fail: '\u274C',
+};
+
+const audioTests = [
+  {
+    title: 'mp3 remote download',
+    url: require('./sound/dadu_11.m4a'),
+  },
+  {
+    title: 'mp3 remote - file doesn\'t exist',
+    url: require('./sound/background_music_02.mp3'),
+  },
+  {
+    title: 'aac remote download',
+    url: 'https://raw.githubusercontent.com/zmxv/react-native-sound-demo/master/pew2.aac',
+  },
+  {
+    title: 'wav remote download',
+    url: 'https://raw.githubusercontent.com/zmxv/react-native-sound-demo/master/frog.wav',
+  }
+];
+
+function setTestState(testInfo, component, status) {
+  component.setState({tests: {...component.state.tests, [testInfo.title]: status}});
+}
+
+/**
+ * Generic play function for majority of tests
+ */
+function playSound(testInfo, component) {
+  setTestState(testInfo, component, 'pending');
+
+  const callback = (error, sound) => {
+    if (error) {
+      Alert.alert('error', error.message);
+      setTestState(testInfo, component, 'fail');
+      return;
+    }
+    setTestState(testInfo, component, 'playing');
+    // Run optional pre-play callback
+    testInfo.onPrepared && testInfo.onPrepared(sound, component);
+    sound.play(() => {
+      // Success counts as getting to the end
+      setTestState(testInfo, component, 'win');
+      // Release when it's done so we're not using up resources
+      sound.release();
+    });
+  };
+
+  // If the audio is a 'require' then the second parameter must be the callback.
+  if (testInfo.isRequire) {
+    console.log(1);
+    
+    const sound = new Sound(testInfo.url, error => callback(error, sound));
+  } else {
+    console.log(2);
+    console.log('url: ', testInfo.url);
+    console.log('path: ', testInfo.basePath);
+    
+    setTimeout(() => {
+      var sound = new Sound(testInfo.url, '', (error) => {
+        console.log('err: ', error)
+      });
+    
+      setTimeout(() => {
+        sound.play((success) => {
+          console.log('suc: ', success)
+        });
+      }, 100);
+    }, 100);
+    
+    // const sound = new Sound(testInfo.url, testInfo.basePath, error => {
+    //   console.log('err: ', error)
+      
+    //   callback(error, sound)
+    // });
+  }
+}
 
 export default class App extends Component {
   constructor(props) {
     super(props);
+
+    Sound.setCategory('Playback', true); // true = mixWithOthers
+
+    // Special case for stopping
+    this.stopSoundLooped = () => {
+      if (!this.state.loopingSound) {
+        return;
+      }
+
+      this.state.loopingSound.stop().release();
+      this.setState({loopingSound: null, tests: {...this.state.tests, ['mp3 in bundle (looped)']: 'win'}});
+    };
+
     this.state = {
-      player1Activated: 0,
-      player2Activated: 0,
-      player3Activated: 0,
-      player4Activated: 0,
-      activePlayer: 1,
-      randomNumber: 0,
-      run: false
-    }
+      loopingSound: undefined,
+      tests: {},
+    };
   }
 
   componentDidMount() {
-
-  }
-
-  boxHorizonatal(position) {
-    let start = position == 'top' ? 16 : 8;
-    let end = position == 'top' ? 24 : 0;
-    let boxs = [];
-    for (let i = start; position == 'top' ? i <= end : i >= end ; position == 'top' ?  i++ : i--) {
-      let box = (
-        <View style={styles.box}>
-          <View style={{flexDirection: 'row'}}>
-            <View style={[styles.player1, { display: this.state.player1Activated == i ? 'flex' : 'none' }]}/>
-            <View style={[styles.player2, { display: this.state.player2Activated == i ? 'flex' : 'none' }]}/>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <View style={[styles.player3, { display: this.state.player3Activated == i ? 'flex' : 'none' }]}/>
-            <View style={[styles.player4, { display: this.state.player4Activated == i ? 'flex' : 'none' }]}/>
-          </View>
-        </View>
-      )
-      boxs.push(box)
-    }
-    return boxs;
-  }
-
-  boxVertical(position) {
-    let start = position == 'left' ? 15 : 25;
-    let end = position == 'left' ? 9 : 31;
-    let boxs = [];
-    for (let i = start; position == 'left' ? i >= end : i <= end ; position == 'left' ?  i-- : i++) {
-      let box = (
-        <View style={styles.box}>
-          <View style={{flexDirection: 'row', backgroundColor: 'yellow'}}>
-            <View style={[styles.player1, { display: this.state.player1Activated == i ? 'flex' : 'none'}]}/>
-            <View style={[styles.player2, { display: this.state.player2Activated == i ? 'flex' : 'none' }]}/>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <View style={[styles.player3, { display: this.state.player3Activated == i ? 'flex' : 'none' }]}/>
-            <View style={[styles.player4, { display: this.state.player4Activated == i ? 'flex' : 'none' }]}/>
-          </View>
-        </View>
-      )
-      boxs.push(box)
-    }
-    return boxs;
-  }
-
-  onPressRoll() {
-    let random =  Math.floor(Math.random() * 12) + 1;
-    this.moveCircle(random)
-    this.setState({ randomNumber: random, run: true })
-  }
-
-  moveCircle(random) {
-    let { activePlayer, player1Activated, player2Activated, player3Activated, player4Activated } = this.state
-    
-    if (activePlayer == 1) {
-      let interval = setInterval(() => {
-        if (this.state.player1Activated == player1Activated + random-1) {
-          clearInterval(interval)
-          this.setState({ activePlayer: activePlayer == 4 ? 1 : activePlayer + 1, run: false })
-        }
-        this.setState({ player1Activated: this.state.player1Activated == 39 ? 0 : this.state.player1Activated + 1 })
-      }, 500)
-    } else if (activePlayer == 2) {
-      let interval = setInterval(() => {
-        if (this.state.player2Activated == player2Activated + random-1) {
-          clearInterval(interval)
-          this.setState({ activePlayer: activePlayer == 4 ? 1 : activePlayer + 1, run: false })
-        }
-        this.setState({ player2Activated: this.state.player2Activated == 39 ? 0 : this.state.player2Activated + 1 })
-      }, 500)
-    } else if (activePlayer == 3) {
-      let interval = setInterval(() => {
-        if (this.state.player3Activated == player3Activated + random-1) {
-          clearInterval(interval)
-          this.setState({ activePlayer: activePlayer == 4 ? 1 : activePlayer + 1, run: false })
-        }
-        this.setState({ player3Activated: this.state.player3Activated == 39 ? 0 : this.state.player3Activated + 1 })
-      }, 500)
-    } else {
-      let interval = setInterval(() => {
-        if (this.state.player4Activated == player4Activated + random-1) {
-          clearInterval(interval)
-          this.setState({ activePlayer: activePlayer == 4 ? 1 : activePlayer + 1, run: false })
-        }
-        this.setState({ player4Activated: this.state.player4Activated == 39 ? 0 : this.state.player4Activated + 1 })
-      }, 500)
-    }
+    let testInfo = audioTests[1]
+    return playSound(testInfo, this);
   }
 
   render() {
-    let { randomNumber, activePlayer, run } = this.state
     return (
       <View style={styles.container}>
-        <View style={{ alignItems: 'center'}}>
-          <View style={{ flexDirection: 'row' }}>
-            {this.boxHorizonatal('top')}
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <View>
-              {this.boxVertical('left')}
-            </View>
-            <View style={{ width: 245, height: 245, backgroundColor: '#f8c291' }}>
-            </View>
-            <View>
-              {this.boxVertical('right')}
-            </View>
-          </View>
-          <View style={{ flexDirection: 'row', marginBottom: 50 }}>
-            {this.boxHorizonatal('bottom')}
-          </View>
-        </View>
-
-        <View style={{alignSelf: 'center', height: 50, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>Player {activePlayer} Play</Text>
-          <Text style={{fontSize: 12, fontWeight: 'bold', margin: 5}}>{run ? `${randomNumber} Langkah` : ''}</Text>
-          <TouchableOpacity disabled={run} onPress={() => this.onPressRoll()} style={{ width: 100, paddingVertical: 5, backgroundColor: run ? 'grey' : '#3c6382', borderRadius: 5, alignItems : 'center'}}>
-            <Text style={{ color: '#fff', fontWeight: 'bold'}}>ROLL</Text>
-          </TouchableOpacity>
-        </View>
-
-        <ScrollView>
-          <View style={{ flexDirection: 'row', marginTop: 20 }}>
-            <View style={[styles.playerCircle, {backgroundColor: 'red'}]}/>
-            <Text style={styles.playerText}>Player 1 : </Text>
-          </View>
-          <View style={{ flexDirection: 'row', marginTop: 20 }}>
-            <View style={[styles.playerCircle, {backgroundColor: 'green'}]}/>
-            <Text style={styles.playerText}>Player 2 : </Text>
-          </View>
-          <View style={{ flexDirection: 'row', marginTop: 20 }}>
-            <View style={[styles.playerCircle, {backgroundColor: 'blue'}]}/>
-            <Text style={styles.playerText}>Player 3 : </Text>
-          </View>
-          <View style={{ flexDirection: 'row', marginTop: 20 }}>
-            <View style={[styles.playerCircle, {backgroundColor: 'skyblue'}]}/>
-            <Text style={styles.playerText}>Player 4 : </Text>
-          </View>
+        <Header style={styles.title}>react-native-sound-demo</Header>
+        <ScrollView style={styles.container} contentContainerStyle={styles.scrollContainer}>
+          {audioTests.map(testInfo => {
+            return (
+              <Feature
+                status={this.state.tests[testInfo.title]}
+                key={testInfo.title}
+                title={testInfo.title}
+                onPress={() => {
+                  return playSound(testInfo, this);
+                }}
+              />
+            );
+          })}
+          <Feature title="mp3 in bundle (looped)" buttonLabel={'STOP'} onPress={this.stopSoundLooped} />
         </ScrollView>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 50,
-    backgroundColor: '#F5FCFF',
-    padding: 15
-  },
-  box: {
-    width: 35, 
-    height: 35, 
-    borderWidth: 1,
-    borderColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  player1: {
-    width: 10, 
-    height: 10, 
-    backgroundColor: 'red', 
-    borderRadius: 5,
-    margin: 1
-  },
-  player2: {
-    width: 10, 
-    height: 10, 
-    backgroundColor: 'green', 
-    borderRadius: 5,
-    margin: 1
-  },
-  player3: {
-    width: 10, 
-    height: 10, 
-    backgroundColor: 'blue', 
-    borderRadius: 5,
-    margin: 1
-  },
-  player4: {
-    width: 10, 
-    height: 10, 
-    backgroundColor: 'skyblue', 
-    borderRadius: 5,
-    margin: 1
-  },
-  playerCircle: {
-    width: 20, 
-    height: 20, 
-    borderRadius: 10,
-  },
-  playerText: {
-    fontSize: 16, 
-    marginLeft: 10,
-    fontWeight: 'bold',
-  }
-});
