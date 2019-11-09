@@ -83,7 +83,7 @@ const dataImages = [
   { id: 6, name: 'aksi', uri: {}, url: {}, categoryId: 51 },
   { id: 7, name: 'rajagaha', uri: require('./assets/images/rajagaha_4.jpg'), url: require('./assets/sounds/raja_gaha_04.m4a'), categoryId: 4 },
   { id: 8, name: 'vesali', uri: require('./assets/images/vesali_5.jpg'), url: require('./assets/sounds/vesalli_05.m4a'), categoryId: 5 },
-  { id: 9, name: 'sugati', uri: {}, url: {}, categoryId: 53 },
+  { id: 9, name: 'sugati', uri: require('./assets/images/kotak_surga.jpg'), url: {}, categoryId: 53 },
   { id: 10, name: 'magadha', uri: require('./assets/images/magadha_6.jpg'), url: require('./assets/sounds/magadha_06.m4a'), categoryId: 6 },
   { id: 11, name: 'studi', uri: {}, categoryId: 50 },
   { id: 12, name: 'uruvela', uri: require('./assets/images/uruvela_7.jpg'), url: require('./assets/sounds/uruvella_07.m4a'), categoryId: 7 },
@@ -99,15 +99,14 @@ const dataImages = [
   { id: 22, name: 'kerajaan kosala', uri: require('./assets/images/kerajaan_kosala_14.jpg'), url: require('./assets/sounds/kerajaan_kosala_14.m4a'), categoryId: 14 },
   { id: 23, name: 'aksi', uri: {}, url: {}, categoryId: 51 },
   { id: 24, name: 'tavatimsa', uri: require('./assets/images/tavatimsa_15.jpg'), url: require('./assets/sounds/tavatimsa_15.m4a'), categoryId: 15 },
-  { id: 25, name: 'empat apaya', uri: {}, url: {}, categoryId: 52 },
+  { id: 25, name: 'empat apaya', uri: require('./assets/images/kotak_apaya.jpg'), url: {}, categoryId: 52 },
   { id: 26, name: 'kota bhaddiya', uri: require('./assets/images/kota_bhaddiya1.jpg'), url: require('./assets/sounds/kota_badhiya_16.m4a'), categoryId: 16 },
   { id: 27, name: 'kerajaan alavi', uri: require('./assets/images/kerajaan_alavi_17.jpg'), categoryId: 17 },
   { id: 28, name: 'studi', uri: {}, url: {}, categoryId: 50 },
   { id: 29, name: 'kusinara', uri: require('./assets/images/kusinara1.jpg'), url: require('./assets/sounds/kusinara_18.m4a'), categoryId: 18 },
-  { id: 30, name: 'kapilavatu', uri: require('./assets/images/kapilavatthu_1.png'), url: require('./assets/sounds/kappilavattu_01.m4a'), categoryId: 1 },
+  { id: 30, name: 'tavatimsa', uri: require('./assets/images/tavatimsa_15.jpg'), url: require('./assets/sounds/tavatimsa_15.m4a'), categoryId: 15 },
   { id: 31, name: 'aksi', uri: {}, url: {}, categoryId: 51 },
-  { id: 32, name: 'taman lumbini', uri: require('./assets/images/taman_lumbini_2.jpg'), url: require('./assets/sounds/taman_lumbini_02.m4a'), categoryId: 2 },
-  { id: 33, name: 'sungai anoma', uri: require('./assets/images/sungai_anoma_3.png'), url: require('./assets/sounds/sungai_anoma_03.m4a'), categoryId: 3 }
+  { id: 32, name: 'savatthi', uri: require('./assets/images/savatthi_13.jpg'), url: require('./assets/sounds/savatti_13.m4a'), categoryId: 13 },
 ]
 
 export default class App extends Component {
@@ -115,19 +114,24 @@ export default class App extends Component {
     super(props);
     Sound.setCategory('Playback', true);
     this.state = {
-      activePlayer: 1,
+      activePlayer: 0,
       randomNumber: 0,
       random1: 1,
       random2: 1,
       run: false,
       jawabanUser: [],
       isVisible: false,
+      isVisibleAksi: false,
+      isVisibleBebas: false,
+      isBebasPilih: false,
+      aksi: [],
       karakter: false,
       pilihan: false,
       pilih: '',
       benar: false,
       isJawab: false,
       isTrue: false,
+      players: [],
       player1: { score: 100, location: 0, penjara: false },
       player2: { score: 100, location: 0, penjara: false },
       player3: { score: 100, location: 0, penjara: false },
@@ -190,7 +194,7 @@ export default class App extends Component {
         },
         {
           id: 7, name: "uruvela", list: [
-            { id: 1, pertanyaan: "TTempat Petapa Gotama Menyiksa Diri", jawaban: ['u', 'r', 'u', 'v', 'e', 'l', 'a'], pilihan1: 'uruvela', pilihan2: 'urumala' },
+            { id: 1, pertanyaan: "Tempat Petapa Gotama Menyiksa Diri", jawaban: ['u', 'r', 'u', 'v', 'e', 'l', 'a'], pilihan1: 'uruvela', pilihan2: 'urumala' },
             { id: 2, pertanyaan: "Lengkapi Pernyataan Berikut!\nPetapa Gotama Menyiksa Diri Selama ... Tahun", jawaban: ['e', 'n', 'a', 'm'], pilihan1: 'lima', pilihan2: 'enam' },
             { id: 3, pertanyaan: "Nama Sungai Bersih dan Jernih yang Mengalir di Dalam Hutan Uruvela", jawaban: ['n', 'e', 'r', 'a', 'n', 'j', 'a', 'r', 'a'], pilihan1: 'neranjara', pilihan2: 'neranjana' },
             { id: 4, pertanyaan: "Sebutan untuk Pasukan Mara yang Pertama (Napsu Indrawi)", jawaban: ['k', 'a', 'm', 'a'], pilihan1: 'kama', pilihan2: 'mara' },
@@ -296,6 +300,25 @@ export default class App extends Component {
             { id: 5, pertanyaan: "Persembahan Pukkusa Kepada Sang Buddha", jawaban: ['j', 'u', 'b', 'a', 'h'], pilihan1: 'pisau', pilihan2: 'jubah' }
           ]
         }
+      ],
+      listAksi: [
+        { category: 0, description: 'Maju Sampai START' },
+        { category: 1, description: 'Maju 8 (Delapan) Langkah', langkah: 8 },
+        { category: 1, description: 'Maju 3 (Delapan) Langkah', langkah: 8 },
+        { category: 1, description: 'Maju 5 (Lima) Langkah', langkah: 5 },
+        { category: 2, description: 'Karena Anda Membuang Sampah Sembarangan,\nAnda Didenda Sebesar 15 Koin', point: -15 },
+        { category: 2, description: 'Karena Anda Sedang Terkena Musibah,\nAnda Mendapatkan 20 Koin dari Setiap Pemain', point: 20 },
+        { category: 2, description: 'Karena Anda Melanggar Sila Kesatu,\nAnda Kena Denda Sebesar 50 Koin', point: -50 },
+        { category: 2, description: 'Karena Anda Melanggar Sila Kedua,\nAnda Kena Denda Sebesar 50 Koin.', point: -50 },
+        { category: 2, description: 'Karena Anda Menjalankan Sila Kesatu,\nAnda Memperoleh 50 Koin', point: 50 },
+        { category: 2, description: 'Karena Anda Menjalankan Sila Kedua,\nAnda Memperoleh 50 Koin', point: 50 },
+        { category: 2, description: 'Karena Anda Menjalankan Sila Ketiga,\nAnda Memperoleh 50 Koin', point: 50 },
+        { category: 2, description: 'Karena Anda Menjalankan Sila Keempat,\nAnda Memperoleh 50 Koin', point: 50 },
+        { category: 2, description: 'Karena Anda Berbuat Baik Selama Sehari Penuh,\nAnda Memperoleh 75 Koin', point: 75 },
+        { category: 2, description: 'Karena Anda Melanggar Sila Ketiga,\nAnda Kena Denda Sebesar 50 Koin', point: -50 },
+        { category: 2, description: 'Karena Anda Melanggar Sila Keempat,\nAnda Kena Denda Sebesar 50 Koin', point: -50 },
+        { category: 2, description: 'Silakan Membayar 25 Koin\nuntuk Menyokong Keperluan Hidup Bhikkhu', point: -25 },
+        { category: 2, description: 'Dalam Memperingati Hari Kathina,\nAnda Harus Berdana Kepada Bhikkhu Sangha Sebesar 25 Koin', point: -25 }
       ]
     }
   }
@@ -305,9 +328,15 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    let { players } = this.props.navigation.state.params
+
+    this.setState({ players });
+
     this.state.listPertanyaan.map((o) => {
       o.list = _.shuffle(o.list)
     })
+
+    _.shuffle(this.state.listAksi);
   }
 
   playSound(testInfo, component) {
@@ -326,9 +355,23 @@ export default class App extends Component {
     }, 100);
   }
 
+  pindahTempat(location) {
+    let { players, activePlayer } = this.state;
+    let active;
+    if (activePlayer == players.length - 1) {
+      active = 0;
+    } else {
+      active = activePlayer + 1;
+    }
+
+    players[activePlayer].location = location
+
+    this.setState({ players, activePlayer: active })
+  }
+
 
   boxHorizontal(position) {
-    let { player1, player2, player3, player4 } = this.state;
+    let { players, isBebasPilih } = this.state;
     let start = position == 'top' ? 16 : 8;
     let end = position == 'top' ? 24 : 0;
     let boxs = [];
@@ -336,26 +379,43 @@ export default class App extends Component {
       let data = dataImages.find(function (item) {
         return item.id == i + 1;
       });
+      let box;
+      if (players.length) {
+        box = (
+          <TouchableOpacity key={i} disabled={!isBebasPilih} onPress={() => this.pindahTempat(i)}>
+            <ImageBackground style={[styles.box, { backgroundColor: data.categoryId == 50 ? 'yellow' : data.categoryId == 51 ? 'rgb(30,177,237)' : data.categoryId == 54 ? 'green' : '#FFF' }]} source={data.uri}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={[styles.player, {
+                  display: players[0] ? players[0].location == i ? 'flex' : 'none' : 'none',
+                  backgroundColor: players[0] ? players[0].image.color : 'transparent'
+                }]} />
+                <View style={[styles.player, {
+                  display: players[1] ? players[1].location == i ? 'flex' : 'none' : 'none',
+                  backgroundColor: players[1] ? players[1].image.color : 'transparent'
+                }]} />
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={[styles.player, {
+                  display: players[2] ? players[2].location == i ? 'flex' : 'none' : 'none',
+                  backgroundColor: players[2] ? players[2].image.color : 'transparent'
+                }]} />
+                <View style={[styles.player, {
+                  display: players[3] ? players[3].location == i ? 'flex' : 'none' : 'none',
+                  backgroundColor: players[3] ? players[3].image.color : 'transparent'
+                }]} />
+              </View>
+            </ImageBackground>
+          </TouchableOpacity>
+        )
+      }
 
-      let box = (
-        <ImageBackground key={i} style={[styles.box, { backgroundColor: data.categoryId == 50 ? 'yellow' : data.categoryId == 52 ? 'red' : data.categoryId == 53 ? 'green' : data.categoryId == 51 ? 'rgb(30,177,237)' : '#94aa2a' }]} source={data.uri}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={[styles.player1, { display: player1.location == i ? 'flex' : 'none' }]} />
-            <View style={[styles.player2, { display: player2.location == i ? 'flex' : 'none' }]} />
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={[styles.player3, { display: player3.location == i ? 'flex' : 'none' }]} />
-            <View style={[styles.player4, { display: player4.location == i ? 'flex' : 'none' }]} />
-          </View>
-        </ImageBackground>
-      )
       boxs.push(box)
     }
     return boxs;
   }
 
   boxVertical(position) {
-    let { player1, player2, player3, player4 } = this.state;
+    let { players, isBebasPilih } = this.state;
     let start = position == 'left' ? 15 : 25;
     let end = position == 'left' ? 9 : 31;
     let boxs = [];
@@ -364,95 +424,97 @@ export default class App extends Component {
       let data = dataImages.find(function (item) {
         return item.id == i + 1;
       });
-
-      let box = (
-        <ImageBackground key={i} style={[styles.box, { backgroundColor: data.categoryId == 50 ? 'yellow' : data.categoryId == 52 ? 'red' : data.categoryId == 53 ? 'green' : data.categoryId == 51 ? 'rgb(30,177,237)' : '#94aa2a' }]} source={data.uri}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={[styles.player1, { display: player1.location == i ? 'flex' : 'none' }]} />
-            <View style={[styles.player2, { display: player2.location == i ? 'flex' : 'none' }]} />
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={[styles.player3, { display: player3.location == i ? 'flex' : 'none' }]} />
-            <View style={[styles.player4, { display: player4.location == i ? 'flex' : 'none' }]} />
-          </View>
-        </ImageBackground>
-      )
+      let box;
+      if (players.length) {
+        box = (
+          <TouchableOpacity key={i} disabled={!isBebasPilih} onPress={() => this.pindahTempat(i)}>
+            <ImageBackground style={[styles.box, { backgroundColor: data.categoryId == 50 ? 'yellow' : data.categoryId == 51 ? 'rgb(30,177,237)' : data.categoryId == 54 ? 'green' : '#FFF' }]} source={data.uri}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={[styles.player, {
+                  display: players[0].location == i ? 'flex' : 'none',
+                  backgroundColor: players[0].image.color
+                }]} />
+                <View style={[styles.player, {
+                  display: players[1].location == i ? 'flex' : 'none',
+                  backgroundColor: players[1].image.color
+                }]} />
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={[styles.player, {
+                  display: players[2] ? players[2].location == i ? 'flex' : 'none' : 'none',
+                  backgroundColor: players[2] ? players[2].image.color : 'transparent'
+                }]} />
+                <View style={[styles.player, {
+                  display: players[3] ? players[3].location == i ? 'flex' : 'none' : 'none',
+                  backgroundColor: players[3] ? players[3].image.color : 'transparent'
+                }]} />
+              </View>
+            </ImageBackground>
+          </TouchableOpacity>
+        )
+      }
       boxs.push(box)
     }
     return boxs;
   }
 
   onPressRoll() {
-    let { random1, random2 } = this.state;
+    let { players, activePlayer, random1, random2 } = this.state;
     random1 = Math.floor(Math.random() * 6) + 1;
     random2 = Math.floor(Math.random() * 6) + 1;
     this.setState({ random1, random2 });
     let random = random1 + random2;
 
-    let testInfo = audioTests.find(function (element) {
-      return element.title == `dadu ${random}`;
-    });
-    if (random1 == random2) {
-      testInfo = audioTests.find(function (element) {
-        return element.title == `double dadu ${random}`;
+    if (players[activePlayer].isPenjara) {
+      let active;
+      if (activePlayer == players.length - 1) {
+        active = 0;
+      } else {
+        active = activePlayer + 1;
+      }
+      if (random1 == random2) {
+        players[activePlayer].isPenjara = false;
+        players[activePlayer].location = 0;
+        this.setState({ players })
+      }
+      this.setState({ activePlayer: active })
+    } else {
+      let testInfo = audioTests.find(function (element) {
+        return element.title == `dadu ${random}`;
       });
-    }
-    this.playSound(testInfo, this);
+      if (random1 == random2) {
+        testInfo = audioTests.find(function (element) {
+          return element.title == `double dadu ${random}`;
+        });
+      }
+      this.playSound(testInfo, this);
 
-    this.setState({ random1, random2, randomNumber: random, run: true })
-    setTimeout(() => {
-      this.moveCircle(random)
-    }, 1000)
+      this.setState({ random1, random2, randomNumber: random, run: true })
+      setTimeout(() => {
+        this.moveCircle(random)
+      }, 1000)
+    }
   }
 
   moveCircle(random) {
-    let { activePlayer, player1, player2, player3, player4 } = this.state
+    let { activePlayer, players } = this.state
+    let player = _.clone(players[activePlayer]);
 
-    if (activePlayer == 1) {
-      let interval = setInterval(() => {
-        if (player1.penjara) {
-          clearInterval(interval)
-          this.setState({ run: false })
-        } else if (this.state.player1.location == player1.location + random - 1) {
-          clearInterval(interval)
-          this.setState({ activePlayer: activePlayer == 4 ? 1 : activePlayer + 1, run: false })
-        }
-        this.setState({ player1: { ...player1, location: player1.location == 39 ? 0 : this.state.player1.location + 1 } })
-      }, 500)
-    } else if (activePlayer == 2) {
-      let interval = setInterval(() => {
-        if (player2.penjara) {
-          clearInterval(interval)
-          this.setState({ run: false })
-        } else if (this.state.player2.location == player2.location + random - 1) {
-          clearInterval(interval)
-          this.setState({ activePlayer: activePlayer == 4 ? 1 : activePlayer + 1, run: false })
-        }
-        this.setState({ player2: { ...player2, location: player2.location == 39 ? 0 : this.state.player2.location + 1 } })
-      }, 500)
-    } else if (activePlayer == 3) {
-      let interval = setInterval(() => {
-        if (player3.penjara) {
-          clearInterval(interval)
-          this.setState({ run: false })
-        } else if (this.state.player3.location == player3.location + random - 1) {
-          clearInterval(interval)
-          this.setState({ activePlayer: activePlayer == 4 ? 1 : activePlayer + 1, run: false })
-        }
-        this.setState({ player3: { ...player3, location: player3.location == 39 ? 0 : this.state.player3.location + 1 } })
-      }, 500)
-    } else {
-      let interval = setInterval(() => {
-        if (player4.penjara) {
-          clearInterval(interval)
-          this.setState({ run: false })
-        } else if (this.state.player4.location == player4.location + random - 1) {
-          clearInterval(interval)
-          this.setState({ activePlayer: activePlayer == 4 ? 1 : activePlayer + 1, run: false })
-        }
-        this.setState({ player4: { ...player4, location: player4.location == 39 ? 0 : this.state.player4.location + 1 } })
-      }, 500)
-    }
+    let interval = setInterval(() => {
+      if (players[activePlayer].isPenjara) {
+        clearInterval(interval)
+        this.setState({ run: false })
+      } else if (players[activePlayer].location == player.location + random - 1) {
+        clearInterval(interval)
+        this.setState({ run: false })
+        this.openModal();
+      }
+
+      let location = players[activePlayer].location == 31 ? 0 : players[activePlayer].location + 1;
+      players[activePlayer].location = location
+
+      this.setState({ players })
+    }, 500)
   }
 
   boardRender() {
@@ -491,92 +553,100 @@ export default class App extends Component {
     this.setState({ jawabanUser: jawabanUser })
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    let { activePlayer, listPertanyaan, player1, player2, player3, player4 } = this.state;
-    if (prevState.run && !this.state.run) {
-      let player = `player${activePlayer - 1}`
-      if (activePlayer == 1) {
-        player = 'player4';
-      }
-      let location = this.state[player].location + 1
-      let a = _.find(dataImages, function (o) {
-        return o.id == location + 1;
-      });
+  openModal() {
+    let { activePlayer, listPertanyaan, players, listAksi, aksi } = this.state;
 
-      if (a.categoryId == 52) {
-        if (activePlayer == 1) {
-          this.setState({ player4: { ...player4, penjara: true } })
-        } else if (activePlayer == 2) {
-          this.setState({ player1: { ...player1, penjara: true } })
-        } else if (activePlayer == 3) {
-          this.setState({ player2: { ...player2, penjara: true } })
-        } else {
-          this.setState({ player3: { ...player3, penjara: true } })
-        }
-      } else if ([50, 51, 53, 54].includes(a.categoryId)) {
-        this.setState({ isVisible: false })
-      } else {
-        let pertanyaan = listPertanyaan[a.categoryId - 1];
-        let jawaban = pertanyaan.list[0].jawaban;
-        let jawab = _.clone(jawaban);
-        jawab[0] = "";
-        jawab[1] = "";
-        jawab[2] = "";
-        this.setState({ jawabanUser: jawab, pertanyaanActive: pertanyaan })
-        this.setState({ isVisible: true })
-        console.log('a: ', a);
+    let player = players[activePlayer];
+    let location = player.location + 2;
 
-        this.playSound(a, this);
-      }
+    let active;
+    if (activePlayer == players.length - 1) {
+      active = 0;
+    } else {
+      active = activePlayer + 1;
+    }
+
+    let item = _.find(dataImages, function (obj) {
+      return obj.id == location;
+    });
+
+    if (item.categoryId == 51) {
+      let random = Math.floor(Math.random() * listAksi.length) + 1;
+      aksi = listAksi[random];
+      this.setState({ aksi, isVisibleAksi: true })
+    } else if (item.categoryId == 52) {
+      players[activePlayer].isPenjara = true;
+      this.setState({ players, activePlayer: active })
+      this.setState({ players })
+    } else if (item.categoryId == 54) {
+      this.setState({ isVisibleBebas: true, isBebasPilih: true })
+    } else if ([50, 53].includes(item.categoryId)) {
+      this.setState({ isVisible: false, activePlayer: active })
+    } else {
+      let pertanyaan = listPertanyaan[item.categoryId];
+      let jawaban = pertanyaan.list[0].jawaban;
+      let jawab = _.clone(jawaban);
+      jawab[0] = '';
+      jawab[1] = '';
+      jawab[2] = '';
+      this.playSound(item, this);
+
+      this.setState({ jawabanUser: jawab, pertanyaanActive: pertanyaan, isVisible: true })
     }
   }
 
-  onJawab() {
-    let { pilihan, karakter, pertanyaanActive, activePlayer, player1, player2, player3, player4, jawabanUser } = this.state
+  onJawab(nilai) {
+    let { pilihan, karakter, pertanyaanActive, activePlayer, players, jawabanUser } = this.state
+    let point = 0;
 
-    let jawaban = pertanyaanActive.list[0].jawaban;
-    let benar = false;
-    let point = 0
-    let isTrue = true
-    let pointKurang = 0
-    if (pilihan) {
-      pointKurang = pointKurang + 10
-    }
-    if (karakter) {
-      pointKurang = pointKurang + 10
-    }
-    if (_.isEqual(jawabanUser, jawaban)) {
-      benar = true
-      point = 50;
+    if (nilai) {
+      point = nilai;
     } else {
-      point = -20;
+      let jawaban = pertanyaanActive.list[0].jawaban;
+      let benar = false;
+      let isTrue = true
+      let pointKurang = 0
+      if (pilihan) {
+        pointKurang = pointKurang + 10
+      }
+      if (karakter) {
+        pointKurang = pointKurang + 10
+      }
+      if (_.isEqual(jawabanUser, jawaban)) {
+        benar = true
+        point = 50;
+      } else {
+        point = -20;
+      }
+      point = point - pointKurang;
+
+      pertanyaanActive.list.shift()
+      this.setState({
+        benar,
+        isTrue
+      })
     }
-    point = point - pointKurang;
 
-    pertanyaanActive.list.shift()
-
-    if (activePlayer == 1) {
-      this.setState({ player4: { ...player4, score: player4.score + point } })
-    } else if (activePlayer == 2) {
-      this.setState({ player1: { ...player1, score: player1.score + point } })
-
-    } else if (activePlayer == 3) {
-      this.setState({ player2: { ...player2, score: player2.score + point } })
-    } else {
-      this.setState({ player3: { ...player3, score: player3.score + point } })
-    }
+    players[activePlayer].score += point;
 
     this.setState({
+      players,
       jawabanUser: [],
       karakter: false,
       pilihan: false,
       pilih: '',
-      benar,
-      isJawab: true,
-      isTrue
+      isJawab: true
     })
+
+    let active;
+    if (activePlayer == players.length - 1) {
+      active = 0;
+    } else {
+      active = activePlayer + 1;
+    }
+
     setTimeout(() => {
-      this.setState({ isVisible: false, isJawab: false })
+      this.setState({ isVisible: false, isJawab: false, activePlayer: active })
     }, 2000)
   }
 
@@ -727,44 +797,124 @@ export default class App extends Component {
     )
   }
 
-  render() {
-    let { random1, random2, activePlayer, run, player1, player2, player3, player4 } = this.state;
+  onJawabAksi(aksi) {
+    let { activePlayer, players } = this.state;
+    let active;
+    if (activePlayer == players.length - 1) {
+      active = 0;
+    } else {
+      active = activePlayer + 1;
+    }
 
+    if (aksi.category == 0) {
+      players[activePlayer].location = 0;
+      this.setState({ players, activePlayer: active });
+    } else if (aksi.category == 1) {
+      this.moveCircle(aksi.langkah);
+    } else {
+      this.onJawab(aksi.point);
+    }
+    this.setState({ isVisibleAksi: false })
+  }
+
+  renderModalStudiAksi() {
+    let { isVisibleAksi, aksi } = this.state;
+    return (
+      <Modal
+        isVisible={isVisibleAksi}
+        style={{ flex: 1, alignItems: 'center' }}
+      >
+        <View style={{ backgroundColor: '#FFF', alignItems: 'center', borderRadius: 10, padding: 15 }}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}>
+            {aksi.description}
+          </Text>
+          <TouchableOpacity style={{ padding: 10, backgroundColor: 'rgb(0,115,195)', borderRadius: 5, marginTop: 20 }} onPress={() => this.onJawabAksi(aksi)}>
+            <Text style={{ color: '#FFF', fontWeight: 'bold' }}>JAWAB</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    )
+  }
+
+  renderModalBebas() {
+    let { isVisibleBebas } = this.state;
+    return (
+      <Modal
+        isVisible={isVisibleBebas}
+        style={{ flex: 1, alignItems: 'center' }}
+      >
+        <View style={{ backgroundColor: '#FFF', alignItems: 'center', borderRadius: 10, padding: 15 }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
+            ~~ BEBAS PILIH TEMPAT ~~
+          </Text>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center', marginTop: 10 }}>
+            silahkan klik kotak dimana saja anda ingin pindah tempat
+          </Text>
+          <TouchableOpacity style={{ padding: 10, backgroundColor: 'rgb(0,115,195)', borderRadius: 5, marginTop: 20 }} onPress={() => this.setState({ isVisibleBebas: false })}>
+            <Text style={{ color: '#FFF', fontWeight: 'bold' }}>JAWAB</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    )
+  }
+
+  playersLeft() {
+    let { players, activePlayer } = this.state;
+
+    let playersLeft = []
+    let left = _.clone(players);
+    if (left.length == 4) {
+      left = left.splice(-1, 1)
+    }
+
+    for (let index = 0; index < left.length; index++) {
+      player = (
+        <View key={index} style={styles.boxContainer}>
+          <View style={{ width: '100%', height: 35, backgroundColor: activePlayer == index ? 'transparent' : 'rgba(123,123,123,0.8)', borderRadius: 40, position: 'absolute' }} />
+          <View style={styles.boxImage}>
+            <Image style={styles.imageUser} source={left[index].image.source} />
+          </View>
+          <Text style={styles.boxValue}>{left[index].score}</Text>
+        </View>
+      )
+      playersLeft.push(player);
+    }
+    return playersLeft;
+  }
+
+  playersRight() {
+    let { players, activePlayer } = this.state;
+    let right = _.clone(players);
+
+    if (right.length == 4) {
+      right = right[3]
+      return (
+        <View style={styles.boxContainer}>
+          <View style={{ width: '100%', height: 35, backgroundColor: activePlayer == 4 ? 'transparent' : 'rgba(123,123,123,0.8)', borderRadius: 40, position: 'absolute' }} />
+          <View style={styles.boxImage}>
+            <Image style={styles.imageUser} source={right.image.source} />
+          </View>
+          <Text style={styles.boxValue}>{right.score}</Text>
+        </View>
+      )
+    } else {
+      return (
+        <View style={{ height: 35 }} />
+      )
+    }
+  }
+
+  render() {
+    let { random1, random2, run } = this.state;
     return (
       <ImageBackground style={styles.container} source={require('./assets/images/backgroundscreen.jpg')} blurRadius={2}>
         <View style={{ justifyContent: 'space-between' }}>
-          <View style={styles.boxContainer}>
-            <View style={{ width: '100%', height: 35, backgroundColor: activePlayer == 1 ? 'transparent' : 'rgba(123,123,123,0.8)', borderRadius: 40, position: 'absolute' }} />
-            <View style={styles.boxImage}>
-              <Image style={styles.imageUser} source={require('./assets/images/pion_jubah_merah.png')} />
-            </View>
-            <Text style={styles.boxValue}>{player1.score}</Text>
-          </View>
-          <View style={styles.boxContainer}>
-            <View style={{ width: '100%', height: 35, backgroundColor: activePlayer == 2 ? 'transparent' : 'rgba(123,123,123,0.8)', borderRadius: 40, position: 'absolute' }} />
-            <View style={styles.boxImage}>
-              <Image style={styles.imageUser} source={require('./assets/images/pion_jubah_coklat_tua.png')} />
-            </View>
-            <Text style={styles.boxValue}>{player2.score}</Text>
-          </View>
-          <View style={styles.boxContainer}>
-            <View style={{ width: '100%', height: 35, backgroundColor: activePlayer == 3 ? 'transparent' : 'rgba(123,123,123,0.8)', borderRadius: 40, position: 'absolute' }} />
-            <View style={styles.boxImage}>
-              <Image style={styles.imageUser} source={require('./assets/images/pion_jubah_abu_abu.png')} />
-            </View>
-            <Text style={styles.boxValue}>{player3.score}</Text>
-          </View>
+          {this.playersLeft()}
         </View>
         {this.boardRender()}
 
         <View style={{ justifyContent: 'space-between' }}>
-          <View style={styles.boxContainer}>
-            <View style={{ width: '100%', height: 35, backgroundColor: activePlayer == 4 ? 'transparent' : 'rgba(123,123,123,0.8)', borderRadius: 40, position: 'absolute' }} />
-            <View style={styles.boxImage}>
-              <Image style={styles.imageUser} source={require('./assets/images/pion_jubah_jingga.png')} />
-            </View>
-            <Text style={styles.boxValue}>{player4.score}</Text>
-          </View>
+          {this.playersRight()}
 
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <View style={{ flexDirection: 'row' }}>
@@ -780,20 +930,8 @@ export default class App extends Component {
         </View>
 
         {this.renderModal()}
-
-        {/* <View style={{alignSelf: 'center', height: 80, justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{fontSize: 14, fontWeight: 'bold'}}>Player {activePlayer} Play</Text>
-          <View style={{flexDirection: 'row', alignItems: 'center', display: run ? 'flex' : 'none'}}>
-            <Text style={{fontSize: 12, fontWeight: 'bold', margin: 5}}>{random1}</Text>
-            <Text>+</Text>
-            <Text style={{fontSize: 12, fontWeight: 'bold', margin: 5}}>{random2}</Text>
-          </View>
-          <Text style={{fontSize: 12, fontWeight: 'bold', margin: 5}}>{run ? `${randomNumber} Langkah` : ''}</Text>
-          <TouchableOpacity disabled={run} onPress={() => this.onPressRoll()} style={{ width: 100, paddingVertical: 5, backgroundColor: run ? 'grey' : '#3c6382', borderRadius: 5, alignItems : 'center'}}>
-            <Text style={{ color: '#fff', fontWeight: 'bold'}}>ROLL</Text>
-          </TouchableOpacity>
-        </View> */}
-
+        {this.renderModalStudiAksi()}
+        {this.renderModalBebas()}
 
       </ImageBackground>
     );
@@ -817,33 +955,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  player1: {
+  player: {
     width: 10,
     height: 10,
-    backgroundColor: 'red',
     borderRadius: 5,
-    margin: 1
-  },
-  player2: {
-    width: 10,
-    height: 10,
-    backgroundColor: 'rgb(112, 60, 29)',
-    borderRadius: 5,
-    margin: 1
-  },
-  player3: {
-    width: 10,
-    height: 10,
-    backgroundColor: 'rgb(218,212,216)',
-    borderRadius: 5,
-    margin: 1
-  },
-  player4: {
-    width: 10,
-    height: 10,
-    backgroundColor: '#FF7F00',
-    borderRadius: 5,
-    margin: 1
+    margin: 1,
+    borderWidth: 1,
+    borderColor: '#FFF'
   },
   playerCircle: {
     width: 20,

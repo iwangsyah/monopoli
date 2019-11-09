@@ -3,6 +3,8 @@ package com.monopoli;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.futurice.rctaudiotoolkit.AudioPackage;
 import org.wonday.orientation.OrientationPackage;
 import com.zmxv.RNSound.RNSoundPackage;
 import com.facebook.react.ReactNativeHost;
@@ -25,6 +27,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNGestureHandlerPackage(),
+            new AudioPackage(),
             new OrientationPackage(),
             new RNSoundPackage()
       );
