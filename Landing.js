@@ -1,5 +1,7 @@
 import React from 'react';
 import { ImageBackground, TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import Sound from 'react-native-sound';
+import Orientation from 'react-native-orientation-locker';
 
 export default class Landing extends React.Component {
     constructor(props) {
@@ -8,6 +10,25 @@ export default class Landing extends React.Component {
             count: 2
         }
     }
+
+    componentWillMount() {
+        Orientation.lockToLandscape()
+        let url = require('./assets/sounds/background_music_02.mp3')
+        window.sounds = new Sound(url, '', (error) => {
+            console.log('err: ', error)
+        });
+
+        setTimeout(() => {
+            window.sounds.play((success) => {
+                console.log('suc: ', success)
+            });
+        }, 100);
+    }
+
+    componentDidMount() {
+
+    }
+
     render() {
         let { count } = this.state;
         return (
@@ -74,7 +95,7 @@ const styles = StyleSheet.create({
         height: 200,
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderRadius: 6,
+        borderRadius: 10,
         borderColor: '#000',
         borderWidth: 3,
         paddingVertical: 20

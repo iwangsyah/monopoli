@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ImageBackground, ScrollView, Image, TextInput, TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import Orientation from 'react-native-orientation-locker';
 import Sound from 'react-native-sound';
 import Modal from "react-native-modal";
 import _ from "lodash";
@@ -307,7 +306,7 @@ export default class App extends Component {
         { category: 1, description: 'Maju 3 (Delapan) Langkah', langkah: 8 },
         { category: 1, description: 'Maju 5 (Lima) Langkah', langkah: 5 },
         { category: 2, description: 'Karena Anda Membuang Sampah Sembarangan,\nAnda Didenda Sebesar 15 Koin', point: -15 },
-        { category: 2, description: 'Karena Anda Sedang Terkena Musibah,\nAnda Mendapatkan 20 Koin dari Setiap Pemain', point: 20 },
+        { category: 2, description: 'Karena Anda Sedang Terkena Musibah,\nAnda Mendapatkan 20 Koin', point: 20 },
         { category: 2, description: 'Karena Anda Melanggar Sila Kesatu,\nAnda Kena Denda Sebesar 50 Koin', point: -50 },
         { category: 2, description: 'Karena Anda Melanggar Sila Kedua,\nAnda Kena Denda Sebesar 50 Koin.', point: -50 },
         { category: 2, description: 'Karena Anda Menjalankan Sila Kesatu,\nAnda Memperoleh 50 Koin', point: 50 },
@@ -324,7 +323,10 @@ export default class App extends Component {
   }
 
   componentWillMount() {
-    Orientation.lockToLandscape()
+    if (window.sounds) {
+      window.sounds.stop()
+      window.sounds.setCurrentTime(0.0)
+    }
   }
 
   componentDidMount() {
@@ -366,7 +368,26 @@ export default class App extends Component {
 
     players[activePlayer].location = location
 
-    this.setState({ players, activePlayer: active })
+    if (players[active].stop) {
+      playerActive = _.filter(players, function (item) { return !item.stop; });
+
+      playerNext = playerActive[0];
+      playerLast = playerActive[playerActive.length - 1]
+      if (players[activePlayer].image.color == playerNext.image.color) {
+        playerNext = playerActive[1]
+      } else if (playerActive.length > 2 && players[activePlayer].image.color == playerActive[1].image.color) {
+        playerNext = playerActive[2]
+      } else if (players[activePlayer].image.color == playerLast.image.color) {
+        playerNext = playerActive[0]
+      }
+
+      let isNext = _.findIndex(players, function (o) { return o.image.color == playerNext.image.color; });
+      this.setState({ activePlayer: isNext })
+    } else {
+      this.setState({ activePlayer: active })
+    }
+
+    this.setState({ players })
   }
 
 
@@ -386,21 +407,25 @@ export default class App extends Component {
             <ImageBackground style={[styles.box, { backgroundColor: data.categoryId == 50 ? 'yellow' : data.categoryId == 51 ? 'rgb(30,177,237)' : data.categoryId == 54 ? 'green' : '#FFF' }]} source={data.uri}>
               <View style={{ flexDirection: 'row' }}>
                 <View style={[styles.player, {
-                  display: players[0] ? players[0].location == i ? 'flex' : 'none' : 'none',
-                  backgroundColor: players[0] ? players[0].image.color : 'transparent'
+                  display: players[0] && !players[0].stop && players[0].location == i ? 'flex' : 'none',
+                  borderWidth: players[0] && players[0].location == i ? 1 : 0,
+                  backgroundColor: players[0].image.color
                 }]} />
                 <View style={[styles.player, {
-                  display: players[1] ? players[1].location == i ? 'flex' : 'none' : 'none',
-                  backgroundColor: players[1] ? players[1].image.color : 'transparent'
+                  display: players[1] && !players[1].stop && players[1].location == i ? 'flex' : 'none',
+                  borderWidth: players[1] && players[1].location == i ? 1 : 0,
+                  backgroundColor: players[1].image.color
                 }]} />
               </View>
               <View style={{ flexDirection: 'row' }}>
                 <View style={[styles.player, {
-                  display: players[2] ? players[2].location == i ? 'flex' : 'none' : 'none',
+                  display: players[2] && !players[2].stop && !players[2].stop && players[2].location == i ? 'flex' : 'none',
+                  borderWidth: players[2] && players[2].location == i ? 1 : 0,
                   backgroundColor: players[2] ? players[2].image.color : 'transparent'
                 }]} />
                 <View style={[styles.player, {
-                  display: players[3] ? players[3].location == i ? 'flex' : 'none' : 'none',
+                  display: players[3] && !players[3].stop && players[3].location == i ? 'flex' : 'none',
+                  borderWidth: players[3] && players[3].location == i ? 1 : 0,
                   backgroundColor: players[3] ? players[3].image.color : 'transparent'
                 }]} />
               </View>
@@ -431,21 +456,25 @@ export default class App extends Component {
             <ImageBackground style={[styles.box, { backgroundColor: data.categoryId == 50 ? 'yellow' : data.categoryId == 51 ? 'rgb(30,177,237)' : data.categoryId == 54 ? 'green' : '#FFF' }]} source={data.uri}>
               <View style={{ flexDirection: 'row' }}>
                 <View style={[styles.player, {
-                  display: players[0].location == i ? 'flex' : 'none',
+                  display: players[0] && !players[0].stop && players[0].location == i ? 'flex' : 'none',
+                  borderWidth: players[0] && players[0].location == i ? 1 : 0,
                   backgroundColor: players[0].image.color
                 }]} />
                 <View style={[styles.player, {
-                  display: players[1].location == i ? 'flex' : 'none',
+                  display: players[1] && !players[1].stop && players[1].location == i ? 'flex' : 'none',
+                  borderWidth: players[1] && players[1].location == i ? 1 : 0,
                   backgroundColor: players[1].image.color
                 }]} />
               </View>
               <View style={{ flexDirection: 'row' }}>
                 <View style={[styles.player, {
-                  display: players[2] ? players[2].location == i ? 'flex' : 'none' : 'none',
+                  display: players[2] && !players[2].stop && players[2].location == i ? 'flex' : 'none',
+                  borderWidth: players[2] && players[2].location == i ? 1 : 0,
                   backgroundColor: players[2] ? players[2].image.color : 'transparent'
                 }]} />
                 <View style={[styles.player, {
-                  display: players[3] ? players[3].location == i ? 'flex' : 'none' : 'none',
+                  display: players[3] && !players[3].stop && players[3].location == i ? 'flex' : 'none',
+                  borderWidth: players[3] && players[3].location == i ? 1 : 0,
                   backgroundColor: players[3] ? players[3].image.color : 'transparent'
                 }]} />
               </View>
@@ -620,6 +649,11 @@ export default class App extends Component {
       }
       point = point - pointKurang;
 
+      players[activePlayer].score += point;
+      if (players[activePlayer].score <= 0) {
+        players[activePlayer].stop = true;
+      }
+
       pertanyaanActive.list.shift()
       this.setState({
         benar,
@@ -645,8 +679,26 @@ export default class App extends Component {
       active = activePlayer + 1;
     }
 
+    if (players[active].stop) {
+      playerActive = _.filter(players, function (item) { return !item.stop; });
+
+      playerNext = playerActive[0];
+      playerLast = playerActive[playerActive.length - 1]
+      if (players[activePlayer].image.color == playerNext.image.color) {
+        playerNext = playerActive[1]
+      } else if (playerActive.length > 2 && players[activePlayer].image.color == playerActive[1].image.color) {
+        playerNext = playerActive[2]
+      } else if (players[activePlayer].image.color == playerLast.image.color) {
+        playerNext = playerActive[0]
+      }
+
+      let isNext = _.findIndex(players, function (o) { return o.image.color == playerNext.image.color; });
+      this.setState({ activePlayer: isNext })
+    } else {
+      this.setState({ activePlayer: active })
+    }
     setTimeout(() => {
-      this.setState({ isVisible: false, isJawab: false, activePlayer: active })
+      this.setState({ isVisible: false, isJawab: false })
     }, 2000)
   }
 
@@ -668,6 +720,7 @@ export default class App extends Component {
         kotak.push(
           <TextInput
             key={index}
+            disableFullscreenUI
             style={{ backgroundColor: 'rgb(146,216,249)', width: 40, height: 40, marginHorizontal: 5, borderRadius: 5, fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
             editable={false}
             maxLength={1}
@@ -678,6 +731,7 @@ export default class App extends Component {
         kotak.push(
           <TextInput
             key={index}
+            disableFullscreenUI
             style={{ backgroundColor: 'rgb(203,203,203)', width: 40, height: 40, marginHorizontal: 5, borderRadius: 5, fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
             editable={true}
             autoCapitalize={false}
@@ -695,6 +749,7 @@ export default class App extends Component {
         kotakPilih.push(
           <TextInput
             key={index}
+            disableFullscreenUI
             style={{ backgroundColor: 'rgb(146,216,249)', width: 40, height: 40, marginHorizontal: 5, borderRadius: 5, fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}
             editable={false}
             maxLength={1}
@@ -808,7 +863,25 @@ export default class App extends Component {
 
     if (aksi.category == 0) {
       players[activePlayer].location = 0;
-      this.setState({ players, activePlayer: active });
+      if (players[active].stop) {
+        playerActive = _.filter(players, function (item) { return !item.stop; });
+
+        playerNext = playerActive[0];
+        playerLast = playerActive[playerActive.length - 1]
+        if (players[activePlayer].image.color == playerNext.image.color) {
+          playerNext = playerActive[1]
+        } else if (playerActive.length > 2 && players[activePlayer].image.color == playerActive[1].image.color) {
+          playerNext = playerActive[2]
+        } else if (players[activePlayer].image.color == playerLast.image.color) {
+          playerNext = playerActive[0]
+        }
+
+        let isNext = _.findIndex(players, function (o) { return o.image.color == playerNext.image.color; });
+        this.setState({ activePlayer: isNext })
+      } else {
+        this.setState({ activePlayer: active })
+      }
+      this.setState({ players });
     } else if (aksi.category == 1) {
       this.moveCircle(aksi.langkah);
     } else {
@@ -860,21 +933,20 @@ export default class App extends Component {
 
   playersLeft() {
     let { players, activePlayer } = this.state;
-
     let playersLeft = []
-    let left = _.clone(players);
-    if (left.length == 4) {
-      left = left.splice(-1, 1)
+    let length = players.length;
+    if (length == 4) {
+      length = length - 1;
     }
 
-    for (let index = 0; index < left.length; index++) {
+    for (let index = 0; index < length; index++) {
       player = (
         <View key={index} style={styles.boxContainer}>
-          <View style={{ width: '100%', height: 35, backgroundColor: activePlayer == index ? 'transparent' : 'rgba(123,123,123,0.8)', borderRadius: 40, position: 'absolute' }} />
-          <View style={styles.boxImage}>
-            <Image style={styles.imageUser} source={left[index].image.source} />
+          <View style={{ width: '100%', height: 35, backgroundColor: players[index].score <= 0 ? 'red' : activePlayer == index ? 'transparent' : 'rgba(123,123,123,0.8)', borderRadius: 40, position: 'absolute' }} />
+          <View style={[styles.boxImage, { backgroundColor: players[index].score <= 0 ? 'grey' : '#FFF' }]}>
+            <Image style={styles.imageUser} source={players[index].image.source} />
           </View>
-          <Text style={styles.boxValue}>{left[index].score}</Text>
+          <Text style={styles.boxValue}>{players[index].score}</Text>
         </View>
       )
       playersLeft.push(player);
@@ -890,8 +962,8 @@ export default class App extends Component {
       right = right[3]
       return (
         <View style={styles.boxContainer}>
-          <View style={{ width: '100%', height: 35, backgroundColor: activePlayer == 4 ? 'transparent' : 'rgba(123,123,123,0.8)', borderRadius: 40, position: 'absolute' }} />
-          <View style={styles.boxImage}>
+          <View style={{ width: '100%', height: 35, backgroundColor: players[3].score <= 0 ? 'red' : activePlayer == 3 ? 'transparent' : 'rgba(123,123,123,0.8)', borderRadius: 40, position: 'absolute' }} />
+          <View style={[styles.boxImage, { backgroundColor: players[3].score <= 0 ? 'grey' : '#FFF' }]}>
             <Image style={styles.imageUser} source={right.image.source} />
           </View>
           <Text style={styles.boxValue}>{right.score}</Text>
@@ -921,7 +993,7 @@ export default class App extends Component {
               <Image style={{ width: 50, height: 50, marginRight: 5 }} source={dice[random1 - 1]} />
               <Image style={{ width: 50, height: 50, marginLeft: 5 }} source={dice[random2 - 1]} />
             </View>
-            <TouchableOpacity disabled={run} onPress={() => this.onPressRoll()} style={{ width: 100, paddingVertical: 5, backgroundColor: run ? 'grey' : 'red', borderRadius: 5, alignItems: 'center', marginTop: 20 }}>
+            <TouchableOpacity disabled={run} onPress={() => this.onPressRoll()} style={{ width: 100, paddingVertical: 5, backgroundColor: run ? 'grey' : '#304ffe', borderRadius: 5, alignItems: 'center', marginTop: 20, borderWidth: 2, borderColor: run ? '#000' : '#FFF' }}>
               <Text style={{ color: '#fff', fontWeight: 'bold' }}>ROLL</Text>
             </TouchableOpacity>
           </View>
@@ -960,7 +1032,6 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 5,
     margin: 1,
-    borderWidth: 1,
     borderColor: '#FFF'
   },
   playerCircle: {
@@ -984,7 +1055,6 @@ const styles = StyleSheet.create({
   boxImage: {
     width: 50,
     height: 50,
-    backgroundColor: '#FFF',
     alignItems: 'center',
     borderRadius: 40,
     borderRightWidth: 3,

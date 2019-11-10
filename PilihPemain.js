@@ -1,5 +1,6 @@
 import React from 'react';
 import { ImageBackground, TouchableOpacity, StyleSheet, Image, Text, View } from 'react-native';
+import Orientation from 'react-native-orientation-locker';
 
 export default class PilihPemain extends React.Component {
     constructor(props) {
@@ -7,6 +8,7 @@ export default class PilihPemain extends React.Component {
         this.state = {
             count: 0,
             active: 1,
+            isPilih: false,
             pemain: [
                 { id: 1, source: require('./assets/images/pion_jubah_merah.png'), color: 'red' },
                 { id: 2, source: require('./assets/images/pion_jubah_coklat_tua.png'), color: 'rgb(112, 60, 29)' },
@@ -23,7 +25,7 @@ export default class PilihPemain extends React.Component {
         let { jumlah } = this.props.navigation.state.params
         let { pemain, players, count, active } = this.state;
         let pilih = pemain[count];
-        let player = { score: 100, location: 0, isPenjara: false, image: pilih }
+        let player = { score: 100, location: 0, isPenjara: false, image: pilih, stop: false }
         players.push(player)
 
         pemain = pemain.filter(function (obj) {
@@ -31,14 +33,18 @@ export default class PilihPemain extends React.Component {
         });
 
         if (jumlah == active) {
+            this.setState({ isPilih: true })
             this.props.navigation.navigate('App', { players });
         } else {
-            this.setState({ pemain, active: active + 1 })
+            this.setState({ isPilih: true })
+            setTimeout(() => {
+                this.setState({ pemain, isPilih: false, active: active + 1 })
+            }, 1200)
         }
     }
 
     render() {
-        let { active, count, pemain } = this.state;
+        let { active, count, pemain, isPilih } = this.state;
 
         return (
             <ImageBackground style={styles.container} source={require('./assets/images/backgroundscreen.jpg')} blurRadius={2}>
@@ -71,7 +77,8 @@ export default class PilihPemain extends React.Component {
                     </View>
 
                     <TouchableOpacity
-                        style={styles.lanjut}
+                        disabled={isPilih}
+                        style={[styles.lanjut, { backgroundColor: isPilih ? 'grey' : '#304ffe' }]}
                         onPress={() => this.onPilih()}
                     >
                         <Text style={{ color: '#FFF' }}>
@@ -99,7 +106,7 @@ const styles = StyleSheet.create({
         height: 200,
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderRadius: 6,
+        borderRadius: 10,
         borderColor: '#000',
         borderWidth: 3,
         paddingVertical: 20
@@ -116,7 +123,6 @@ const styles = StyleSheet.create({
         borderRightColor: 'transparent'
     },
     lanjut: {
-        backgroundColor: '#304ffe',
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 5
