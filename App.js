@@ -113,6 +113,7 @@ export default class App extends Component {
     super(props);
     Sound.setCategory('Playback', true);
     this.state = {
+      winner: '',
       activePlayer: 0,
       randomNumber: 0,
       random1: 1,
@@ -303,7 +304,7 @@ export default class App extends Component {
       listAksi: [
         { category: 0, description: 'Maju Sampai START' },
         { category: 1, description: 'Maju 8 (Delapan) Langkah', langkah: 8 },
-        { category: 1, description: 'Maju 3 (Delapan) Langkah', langkah: 8 },
+        { category: 1, description: 'Maju 3 (Delapan) Langkah', langkah: 3 },
         { category: 1, description: 'Maju 5 (Lima) Langkah', langkah: 5 },
         { category: 2, description: 'Karena Anda Membuang Sampah Sembarangan,\nAnda Didenda Sebesar 15 Koin', point: -15 },
         { category: 2, description: 'Karena Anda Sedang Terkena Musibah,\nAnda Mendapatkan 20 Koin', point: 20 },
@@ -409,24 +410,24 @@ export default class App extends Component {
                 <View style={[styles.player, {
                   display: players[0] && !players[0].stop && players[0].location == i ? 'flex' : 'none',
                   borderWidth: players[0] && players[0].location == i ? 1 : 0,
-                  backgroundColor: players[0].image.color
+                  backgroundColor: players[0].image.color, borderColor: players[0].image.color == 'yellow' ? '#000' : '#FFF'
                 }]} />
                 <View style={[styles.player, {
                   display: players[1] && !players[1].stop && players[1].location == i ? 'flex' : 'none',
                   borderWidth: players[1] && players[1].location == i ? 1 : 0,
-                  backgroundColor: players[1].image.color
+                  backgroundColor: players[1].image.color, borderColor: players[1].image.color == 'yellow' ? '#000' : '#FFF'
                 }]} />
               </View>
               <View style={{ flexDirection: 'row' }}>
                 <View style={[styles.player, {
                   display: players[2] && !players[2].stop && !players[2].stop && players[2].location == i ? 'flex' : 'none',
                   borderWidth: players[2] && players[2].location == i ? 1 : 0,
-                  backgroundColor: players[2] ? players[2].image.color : 'transparent'
+                  backgroundColor: players[2] ? players[2].image.color : 'transparent', borderColor: players[2] && players[2].image.color == 'yellow' ? '#000' : '#FFF'
                 }]} />
                 <View style={[styles.player, {
                   display: players[3] && !players[3].stop && players[3].location == i ? 'flex' : 'none',
                   borderWidth: players[3] && players[3].location == i ? 1 : 0,
-                  backgroundColor: players[3] ? players[3].image.color : 'transparent'
+                  backgroundColor: players[3] ? players[3].image.color : 'transparent', borderColor: players[3] && players[3].image.color == 'yellow' ? '#000' : '#FFF'
                 }]} />
               </View>
             </ImageBackground>
@@ -458,24 +459,24 @@ export default class App extends Component {
                 <View style={[styles.player, {
                   display: players[0] && !players[0].stop && players[0].location == i ? 'flex' : 'none',
                   borderWidth: players[0] && players[0].location == i ? 1 : 0,
-                  backgroundColor: players[0].image.color
+                  backgroundColor: players[0].image.color, borderColor: players[0].image.color == 'yellow' ? '#000' : '#FFF'
                 }]} />
                 <View style={[styles.player, {
                   display: players[1] && !players[1].stop && players[1].location == i ? 'flex' : 'none',
                   borderWidth: players[1] && players[1].location == i ? 1 : 0,
-                  backgroundColor: players[1].image.color
+                  backgroundColor: players[1].image.color, borderColor: players[1].image.color == 'yellow' ? '#000' : '#FFF'
                 }]} />
               </View>
               <View style={{ flexDirection: 'row' }}>
                 <View style={[styles.player, {
                   display: players[2] && !players[2].stop && players[2].location == i ? 'flex' : 'none',
                   borderWidth: players[2] && players[2].location == i ? 1 : 0,
-                  backgroundColor: players[2] ? players[2].image.color : 'transparent'
+                  backgroundColor: players[2] ? players[2].image.color : 'transparent', borderColor: players[2] && players[2].image.color == 'yellow' ? '#000' : '#FFF'
                 }]} />
                 <View style={[styles.player, {
                   display: players[3] && !players[3].stop && players[3].location == i ? 'flex' : 'none',
                   borderWidth: players[3] && players[3].location == i ? 1 : 0,
-                  backgroundColor: players[3] ? players[3].image.color : 'transparent'
+                  backgroundColor: players[3] ? players[3].image.color : 'transparent', borderColor: players[3] && players[3].image.color == 'yellow' ? '#000' : '#FFF'
                 }]} />
               </View>
             </ImageBackground>
@@ -493,7 +494,6 @@ export default class App extends Component {
     random2 = Math.floor(Math.random() * 6) + 1;
     this.setState({ random1, random2 });
     let random = random1 + random2;
-
     if (players[activePlayer].isPenjara) {
       let active;
       if (activePlayer == players.length - 1) {
@@ -530,10 +530,17 @@ export default class App extends Component {
     let player = _.clone(players[activePlayer]);
 
     let interval = setInterval(() => {
+      let loc = player.location + random - 1
+      if (player.location + random - 1 == 32) {
+        loc = 0
+      } else if (player.location + random - 1 > 32) {
+        loc = player.location + random - 32
+      }
+
       if (players[activePlayer].isPenjara) {
         clearInterval(interval)
         this.setState({ run: false })
-      } else if (players[activePlayer].location == player.location + random - 1) {
+      } else if (players[activePlayer].location == loc) {
         clearInterval(interval)
         this.setState({ run: false })
         this.openModal();
@@ -624,6 +631,10 @@ export default class App extends Component {
     }
   }
 
+  openModalWinner(winner) {
+    this.setState({ isVisibleWinner: true, winner })
+  }
+
   onJawab(nilai) {
     let { pilihan, karakter, pertanyaanActive, activePlayer, players, jawabanUser } = this.state
     let point = 0;
@@ -647,11 +658,30 @@ export default class App extends Component {
       } else {
         point = -20;
       }
+
       point = point - pointKurang;
 
       players[activePlayer].score += point;
+
       if (players[activePlayer].score <= 0) {
         players[activePlayer].stop = true;
+      }
+
+      let sisaPertanyaan = 0;
+      this.state.listPertanyaan.map((o) => {
+        sisaPertanyaan += o.list.length
+      })
+
+      let playerActive = _.filter(players, function (item) { return !item.stop; });
+      if (playerActive.length == 1) {
+        let winner = _.findIndex(players, function (o) { return o.image.color == playerActive[0].image.color }) + 1
+        this.openModalWinner(winner);
+      }
+
+      if (sisaPertanyaan == 0) {
+        let max = _.maxBy(playersActive, 'score');
+        let winner = _.findIndex(players, function (o) { return o.image.color == max }) + 1
+        this.openModalWinner(winner);
       }
 
       pertanyaanActive.list.shift()
@@ -660,8 +690,6 @@ export default class App extends Component {
         isTrue
       })
     }
-
-    players[activePlayer].score += point;
 
     this.setState({
       players,
@@ -890,6 +918,31 @@ export default class App extends Component {
     this.setState({ isVisibleAksi: false })
   }
 
+  renderModalWinner() {
+    let { isVisibleWinner, winner } = this.state;
+
+    return (
+      <Modal
+        isVisible={isVisibleWinner}
+        style={{ flex: 1, alignItems: 'center' }}
+      >
+        <View style={{ backgroundColor: '#FFF', alignItems: 'center', borderRadius: 10, padding: 15 }}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}>
+            PERMAINAN SELESAI
+          </Text>
+          <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>--- Player {winner} Menang ---</Text>
+          <TouchableOpacity style={{ padding: 10, backgroundColor: 'rgb(0,115,195)', borderRadius: 5, marginTop: 20 }} onPress={() => {
+            this.setState({ isVisibleWinner: false })
+            this.props.navigation.navigate('Landing')
+          }
+          }>
+            <Text style={{ color: '#FFF', fontWeight: 'bold' }}>Mulai Ulang</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    )
+  }
+
   renderModalStudiAksi() {
     let { isVisibleAksi, aksi } = this.state;
     return (
@@ -899,7 +952,7 @@ export default class App extends Component {
       >
         <View style={{ backgroundColor: '#FFF', alignItems: 'center', borderRadius: 10, padding: 15 }}>
           <Text style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}>
-            {aksi.description}
+            {aksi ? aksi.description : ''}
           </Text>
           <TouchableOpacity style={{ padding: 10, backgroundColor: 'rgb(0,115,195)', borderRadius: 5, marginTop: 20 }} onPress={() => this.onJawabAksi(aksi)}>
             <Text style={{ color: '#FFF', fontWeight: 'bold' }}>JAWAB</Text>
@@ -1004,6 +1057,7 @@ export default class App extends Component {
         {this.renderModal()}
         {this.renderModalStudiAksi()}
         {this.renderModalBebas()}
+        {this.renderModalWinner()}
 
       </ImageBackground>
     );
