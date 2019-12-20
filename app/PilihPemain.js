@@ -10,12 +10,12 @@ export default class PilihPemain extends React.Component {
             active: 1,
             isPilih: false,
             pemain: [
-                { id: 1, source: require('./assets/images/pion_jubah_merah.png'), color: 'red' },
-                { id: 2, source: require('./assets/images/pion_jubah_coklat_tua.png'), color: 'rgb(112, 60, 29)' },
-                { id: 3, source: require('./assets/images/pion_jubah_abu_abu.png'), color: 'rgb(218,212,216)' },
-                { id: 4, source: require('./assets/images/pion_jubah_jingga.png'), color: '#FF7F00' },
-                { id: 5, source: require('./assets/images/pion_jubah_kuning.png'), color: 'yellow' },
-                { id: 6, source: require('./assets/images/pion_jubah_coklat_muda.png'), color: 'rgb(210,130,38)' }
+                { id: 1, name: 'Sariputta', description: 'Terkemuka dalam kebijaksanaan', source: require('./assets/images/pion_jubah_merah.png'), color: 'red' },
+                { id: 2, name: 'Anuruddha', description: 'Terkemuka dalam mata dewa', source: require('./assets/images/pion_jubah_coklat_tua.png'), color: 'rgb(112, 60, 29)' },
+                { id: 3, name: 'Ananda', description: 'Pembantu tetap Sang Buddha dan bendahara Dhamma', source: require('./assets/images/pion_jubah_abu_abu.png'), color: 'rgb(218,212,216)' },
+                { id: 4, name: 'Moggallana', description: 'Terkemuka dalam kekuatan “gaib”', source: require('./assets/images/pion_jubah_jingga.png'), color: '#FF7F00' },
+                { id: 5, name: 'Upali', description: 'Terkemuka dalam menjaga Sila', source: require('./assets/images/pion_jubah_kuning.png'), color: 'yellow' },
+                { id: 6, name: 'Maha Kassapa ', description: 'Terkemuka dalam pelaksanaan latihan keras', source: require('./assets/images/pion_jubah_coklat_muda.png'), color: 'rgb(210,130,38)' }
             ],
             players: []
         }
@@ -25,7 +25,7 @@ export default class PilihPemain extends React.Component {
         let { jumlah } = this.props.navigation.state.params
         let { pemain, players, count, active } = this.state;
         let pilih = pemain[count];
-        let player = { score: 100, location: 0, isPenjara: false, image: pilih, stop: false }
+        let player = { score: 100, location: 0, isPenjara: false, image: pilih, stop: false, karakter: 3, pilihan: 3, teman: 3 }
         players.push(player)
 
         pemain = pemain.filter(function (obj) {
@@ -49,8 +49,8 @@ export default class PilihPemain extends React.Component {
         return (
             <ImageBackground style={styles.container} source={require('./assets/images/backgroundscreen.jpg')} blurRadius={2}>
                 <View style={styles.box}>
-                    <Text style={{ fontSize: 18 }}>Pilih Warna</Text>
-                    <Text style={{ fontSize: 18 }}>Player {active}</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Pilih Pemain</Text>
+                    <Text style={{ fontSize: 18 }}>{pemain[count].name}</Text>
 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <TouchableOpacity
@@ -76,14 +76,16 @@ export default class PilihPemain extends React.Component {
                         />
                     </View>
 
+                    <Text style={{ fontSize: 15, marginBottom: 15, textAlign: 'center' }}>{pemain[count].description}</Text>
+
                     <TouchableOpacity
                         disabled={isPilih}
                         style={[styles.lanjut, { backgroundColor: isPilih ? 'grey' : '#304ffe' }]}
                         onPress={() => this.onPilih()}
                     >
                         <Text style={{ color: '#FFF' }}>
-                            LANJUT
-                            </Text>
+                            {`Player ${active}`}
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
@@ -103,7 +105,6 @@ const styles = StyleSheet.create({
     box: {
         backgroundColor: '#FFF',
         width: 300,
-        height: 200,
         alignItems: 'center',
         justifyContent: 'space-between',
         borderRadius: 10,
