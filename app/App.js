@@ -79,36 +79,67 @@ const audioTests = [
 
 const dataImages = [
   { id: 1, name: 'start', uri: require('./assets/images/start.png'), url: {}, categoryId: 0 },
+
   { id: 2, name: 'kapilavatu', uri: require('./assets/images/kapilavatthu_1.png'), url: require('./assets/sounds/kappilavattu_01.m4a'), categoryId: 1 },
+
   { id: 3, name: 'studi', uri: require('./assets/images/studi.png'), url: {}, categoryId: 50 },
+
   { id: 4, name: 'pajak', uri: require('./assets/images/pajak.png'), url: {}, categoryId: 55 },
-  { id: 5, name: 'sungai anoma', uri: require('./assets/images/sungai_anoma_3.png'), url: require('./assets/sounds/sungai_anoma_03.m4a'), categoryId: 3 },
+
+  { id: 5, name: 'sungai anoma', uri: require('./assets/images/taman_lumbini_2.jpg'), url: require('./assets/sounds/taman_lumbini_02.m4a'), categoryId: 2 },
+
   { id: 6, name: 'aksi', uri: require('./assets/images/aksi.png'), url: {}, categoryId: 51 },
-  { id: 7, name: 'rajagaha', uri: require('./assets/images/rajagaha_4.jpg'), url: require('./assets/sounds/raja_gaha_04.m4a'), categoryId: 4 },
-  { id: 8, name: 'vesali', uri: require('./assets/images/vesali_5.jpg'), url: require('./assets/sounds/vesalli_05.m4a'), categoryId: 5 },
+
+  { id: 7, name: 'sungai anoma', uri: require('./assets/images/sungai_anoma_3.png'), url: require('./assets/sounds/sungai_anoma_03.m4a'), categoryId: 3 },
+
+  { id: 8, name: 'rajagaha', uri: require('./assets/images/rajagaha_4.jpg'), url: require('./assets/sounds/raja_gaha_04.m4a'), categoryId: 4 },
+
   { id: 9, name: 'sugati', uri: require('./assets/images/kotak_surga.jpg'), url: {}, categoryId: 53 },
-  { id: 10, name: 'magadha', uri: require('./assets/images/magadha_6.jpg'), url: require('./assets/sounds/magadha_06.m4a'), categoryId: 6 },
+
+  { id: 10, name: 'vesali', uri: require('./assets/images/vesali_5.jpg'), url: require('./assets/sounds/vesalli_05.m4a'), categoryId: 5 },
+
   { id: 11, name: 'studi', uri: require('./assets/images/studi.png'), categoryId: 50 },
-  { id: 12, name: 'uruvela', uri: require('./assets/images/uruvela_7.jpg'), url: require('./assets/sounds/uruvella_07.m4a'), categoryId: 7 },
-  { id: 13, name: 'sesanigama', uri: require('./assets/images/sesanigamaaa_8.jpg'), url: require('./assets/sounds/sesanigama_08.m4a'), categoryId: 8 },
+
+  { id: 12, name: 'magadha', uri: require('./assets/images/magadha_6.jpg'), url: require('./assets/sounds/magadha_06.m4a'), categoryId: 6 },
+
+  { id: 13, name: 'uruvela', uri: require('./assets/images/uruvela_7.jpg'), url: require('./assets/sounds/uruvella_07.m4a'), categoryId: 7 },
+
   { id: 14, name: 'aksi', uri: require('./assets/images/aksi.png'), url: {}, categoryId: 51 },
-  { id: 15, name: 'hutan gaya', uri: require('./assets/images/hutan_gaya.jpg'), url: require('./assets/sounds/hutan_gaya_09.m4a'), categoryId: 9 },
-  { id: 16, name: 'digadaya', uri: require('./assets/images/migadaya_10.jpg'), url: require('./assets/sounds/digadhaya_10.m4a'), categoryId: 10 },
+
+  { id: 15, name: 'sesanigama', uri: require('./assets/images/sesanigamaaa_8.jpg'), url: require('./assets/sounds/sesanigama_08.m4a'), categoryId: 8 },
+
+  { id: 16, name: 'hutan gaya', uri: require('./assets/images/hutan_gaya.jpg'), url: require('./assets/sounds/hutan_gaya_09.m4a'), categoryId: 9 },
+
   { id: 17, name: 'bebas', uri: require('./assets/images/bebas.jpg'), url: {}, categoryId: 54 },
-  { id: 18, name: 'baranasi', uri: require('./assets/images/baranasi1.jpg'), url: require('./assets/sounds/baranasi_11.m4a'), categoryId: 11 },
-  { id: 19, name: 'hutan bambu', uri: require('./assets/images/hutan_bambu_12.jpg'), url: require('./assets/sounds/hutan_bambu_12.m4a'), categoryId: 12 },
+
+  { id: 18, name: 'migadaya', uri: require('./assets/images/migadaya_10.jpg'), url: require('./assets/sounds/migadhaya_10.m4a'), categoryId: 10 },
+
+  { id: 19, name: 'baranasi', uri: require('./assets/images/baranasi1.jpg'), url: require('./assets/sounds/baranasi_11.m4a'), categoryId: 11 },
+
   { id: 20, name: 'studi', uri: require('./assets/images/studi.png'), url: {}, categoryId: 50 },
-  { id: 21, name: 'savatthi', uri: require('./assets/images/savatthi_13.jpg'), url: require('./assets/sounds/savatti_13.m4a'), categoryId: 13 },
-  { id: 22, name: 'kerajaan kosala', uri: require('./assets/images/kerajaan_kosala_14.jpg'), url: require('./assets/sounds/kerajaan_kosala_14.m4a'), categoryId: 14 },
+
+  { id: 21, name: 'hutan bambu', uri: require('./assets/images/hutan_bambu_12.jpg'), url: require('./assets/sounds/hutan_bambu_12.m4a'), categoryId: 12 },
+
+  { id: 22, name: 'savatthi', uri: require('./assets/images/savatthi_13.jpg'), url: require('./assets/sounds/savatti_13.m4a'), categoryId: 13 },
+
   { id: 23, name: 'aksi', uri: require('./assets/images/aksi.png'), url: {}, categoryId: 51 },
-  { id: 24, name: 'tavatimsa', uri: require('./assets/images/tavatimsa_15.jpg'), url: require('./assets/sounds/tavatimsa_15.m4a'), categoryId: 15 },
+
+  { id: 24, name: 'kerajaan kosala', uri: require('./assets/images/kerajaan_kosala_14.jpg'), url: require('./assets/sounds/kerajaan_kosala_14.m4a'), categoryId: 14 },
+
   { id: 25, name: 'empat apaya', uri: require('./assets/images/kotak_apaya.jpg'), url: {}, categoryId: 52 },
-  { id: 26, name: 'kota bhaddiya', uri: require('./assets/images/kota_bhaddiya1.jpg'), url: require('./assets/sounds/kota_badhiya_16.m4a'), categoryId: 16 },
-  { id: 27, name: 'kerajaan alavi', uri: require('./assets/images/kerajaan_alavi_17.jpg'), categoryId: 17 },
+
+  { id: 26, name: 'tavatimsa', uri: require('./assets/images/tavatimsa_15.jpg'), url: require('./assets/sounds/tavatimsa_15.m4a'), categoryId: 15 },
+
+  { id: 27, name: 'kota bhaddiya', uri: require('./assets/images/kota_bhaddiya1.jpg'), url: require('./assets/sounds/kota_badhiya_16.m4a'), categoryId: 16 },
+
   { id: 28, name: 'studi', uri: require('./assets/images/studi.png'), url: {}, categoryId: 50 },
-  { id: 29, name: 'kusinara', uri: require('./assets/images/kusinara1.jpg'), url: require('./assets/sounds/kusinara_18.m4a'), categoryId: 18 },
+
+  { id: 29, name: 'kerajaan alavi', uri: require('./assets/images/kerajaan_alavi_17.jpg'), categoryId: 17 },
+
   { id: 30, name: 'berdana', uri: require('./assets/images/berdana.png'), url: {}, categoryId: 56 },
+
   { id: 31, name: 'aksi', uri: require('./assets/images/aksi.png'), url: {}, categoryId: 51 },
+
   { id: 32, name: 'karma baik', uri: require('./assets/images/karmabaik.png'), url: {}, categoryId: 57 },
 ]
 
@@ -130,6 +161,7 @@ export default class App extends Component {
       isVisibleBebas: false,
       isVisibleStudi: false,
       isVisibleHabis: false,
+      isVisibleWinner: false,
       isBebasPilih: false,
       aksi: {},
       studi: {},
@@ -386,8 +418,6 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.setState({ players });
-
     this.state.listPertanyaan.map((o) => {
       o.list = _.shuffle(o.list)
     })
@@ -549,7 +579,7 @@ export default class App extends Component {
     this.setState({ random1, random2, isPress: false });
 
     let random = random1 + random2;
-    random = 3
+
     if (players[activePlayer].isPenjara) {
       let active;
       if (activePlayer == players.length - 1) {
@@ -659,7 +689,7 @@ export default class App extends Component {
   }
 
   openModal() {
-    let { activePlayer, listPertanyaan, players, listAksi, listStudi, aksi, pajak, berdana, karakter } = this.state;
+    let { activePlayer, listPertanyaan, players, listAksi, listStudi, aksi, pajak, berdana } = this.state;
 
     let player = players[activePlayer];
     let location = player.location + 2;
@@ -671,6 +701,10 @@ export default class App extends Component {
       active = activePlayer + 1;
     }
 
+    if (location == 33) {
+      location = 1;
+    }
+
     let item = _.find(dataImages, function (obj) {
       return obj.id == location;
     });
@@ -680,7 +714,7 @@ export default class App extends Component {
       studi = listStudi[random];
       this.setState({ studi, isVisibleStudi: true })
     } else if (item.categoryId == 51) {
-      let random = Math.floor(Math.random() * listAksi.length) + 1;
+      let random = Math.floor(Math.random() * (listAksi.length - 1)) + 1;
       aksi = listAksi[random];
       this.setState({ aksi, isVisibleAksi: true })
     } else if (item.categoryId == 52) {
@@ -700,6 +734,8 @@ export default class App extends Component {
     } else if (item.categoryId == 57) {
       aksi = karmabaik;
       this.setState({ aksi, isVisibleAksi: true })
+    } else if (item.categoryId == 0) {
+      this.setState({ activePlayer: active })
     } else if (listPertanyaan.length) {
       if (listPertanyaan[item.categoryId].list[0]) {
         let pertanyaan = listPertanyaan[item.categoryId];
@@ -725,7 +761,7 @@ export default class App extends Component {
 
   onJawab(nilai) {
     let { teman, pilihan, karakter, pertanyaanActive, activePlayer, players, jawabanUser, pilihTeman } = this.state
-    let point = 0;
+    let point = 10;
 
     if (nilai) {
       point = nilai;
@@ -779,18 +815,24 @@ export default class App extends Component {
 
       let playerActive = _.filter(players, function (item) { return !item.stop; });
 
+
       if (playerActive.length == 1) {
         let winner = _.findIndex(players, function (o) { return o.image.color == playerActive[0].image.color }) + 1
-        this.openModalWinner(winner);
+        setTimeout(() => {
+          this.openModalWinner(winner);
+        }, 2500)
       }
 
       if (sisaPertanyaan == 0) {
         let max = _.maxBy(playersActive, 'score');
         let winner = _.findIndex(players, function (o) { return o.image.color == max }) + 1
-        this.openModalWinner(winner);
+        setTimeout(() => {
+          this.openModalWinner(winner);
+        }, 2500)
       }
 
-      pertanyaanActive.list.shift()
+      pertanyaanActive.list.shift();
+
       this.setState({
         benar,
         isTrue
@@ -802,6 +844,7 @@ export default class App extends Component {
       jawabanUser: [],
       karakter: false,
       pilihan: false,
+      teman: false,
       pilih: '',
       isJawab: true
     })
@@ -1082,10 +1125,10 @@ export default class App extends Component {
         style={{ flex: 1, alignItems: 'center' }}
       >
         <View style={{ backgroundColor: '#FFF', alignItems: 'center', borderRadius: 10, padding: 15 }}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 }}>
             PERMAINAN SELESAI
           </Text>
-          <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>--- Player {winner} Menang ---</Text>
+          <Text style={{ fontWeight: 'bold', textAlign: 'center', fontSize: 30 }}>--- Player {winner} Menang ---</Text>
           <TouchableOpacity style={{ padding: 10, backgroundColor: 'rgb(0,115,195)', borderRadius: 5, marginTop: 20 }} onPress={() => {
             this.setState({ isVisibleWinner: false })
             this.props.navigation.navigate('Landing')
