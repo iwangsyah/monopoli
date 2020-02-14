@@ -5,6 +5,8 @@ import Landing from './Landing';
 import PilihPemain from './PilihPemain';
 import App from './App';
 
+console.disableYellowBox = true;
+
 const AppNavigator = createStackNavigator(
     {
         Landing: Landing,

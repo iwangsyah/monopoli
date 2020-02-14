@@ -134,7 +134,7 @@ const dataImages = [
 
   { id: 28, name: 'studi', uri: require('./assets/images/studi.png'), url: {}, categoryId: 50 },
 
-  { id: 29, name: 'kerajaan alavi', uri: require('./assets/images/kerajaan_alavi_17.jpg'), categoryId: 17 },
+  { id: 29, name: 'kerajaan alavi', uri: require('./assets/images/kerajaan_alavi_17.jpg'), url: require('./assets/sounds/kerajaan_alavi_17.m4a'), categoryId: 17 },
 
   { id: 30, name: 'berdana', uri: require('./assets/images/berdana.png'), url: {}, categoryId: 56 },
 
@@ -162,6 +162,7 @@ export default class App extends Component {
       isVisibleStudi: false,
       isVisibleHabis: false,
       isVisibleWinner: false,
+      isVisiblePenjara: false,
       isBebasPilih: false,
       aksi: {},
       studi: {},
@@ -472,7 +473,7 @@ export default class App extends Component {
       this.setState({ activePlayer: active })
     }
 
-    this.setState({ players, isBebasPilih: false })
+    this.setState({ players, isBebasPilih: false, run: false })
   }
 
 
@@ -689,8 +690,7 @@ export default class App extends Component {
   }
 
   openModal() {
-    let { activePlayer, listPertanyaan, players, listAksi, listStudi, aksi, pajak, berdana } = this.state;
-
+    let { activePlayer, listPertanyaan, players, listAksi, listStudi, aksi, pajak, berdana, karmabaik } = this.state;
     let player = players[activePlayer];
     let location = player.location + 2;
 
@@ -710,30 +710,50 @@ export default class App extends Component {
     });
 
     if (item.categoryId == 50) {
-      let random = Math.floor(Math.random() * listStudi.length) + 1;
+      let random = Math.floor(Math.random() * (listStudi.length - 1)) + 1;
       studi = listStudi[random];
-      this.setState({ studi, isVisibleStudi: true })
+      this.setState({ studi, isVisibleStudi: true, run: true })
     } else if (item.categoryId == 51) {
       let random = Math.floor(Math.random() * (listAksi.length - 1)) + 1;
       aksi = listAksi[random];
-      this.setState({ aksi, isVisibleAksi: true })
+      this.setState({ aksi, isVisibleAksi: true, run: true })
     } else if (item.categoryId == 52) {
       players[activePlayer].isPenjara = true;
-      this.setState({ players, activePlayer: active })
-      this.setState({ players })
+      if (players[active].stop) {
+        playerActive = _.filter(players, function (item) { return !item.stop; });
+
+        playerNext = playerActive[0];
+        playerLast = playerActive[playerActive.length - 1]
+        if (players[activePlayer].image.color == playerNext.image.color) {
+          playerNext = playerActive[1]
+        } else if (playerActive.length > 2 && players[activePlayer].image.color == playerActive[1].image.color) {
+          playerNext = playerActive[2]
+        } else if (players[activePlayer].image.color == playerLast.image.color) {
+          playerNext = playerActive[0]
+        }
+
+        let isNext = _.findIndex(players, function (o) { return o.image.color == playerNext.image.color; });
+        this.setState({ activePlayer: isNext })
+      } else {
+        this.setState({ activePlayer: active })
+      }
+      this.setState({ players, isVisiblePenjara: true })
+      setTimeout(() => {
+        this.setState({ isVisiblePenjara: false })
+      }, 2000)
     } else if (item.categoryId == 54) {
-      this.setState({ isVisibleBebas: true, isBebasPilih: true })
-    } else if ([50, 53].includes(item.categoryId)) {
-      this.setState({ isVisible: false, activePlayer: active })
+      this.setState({ isVisibleBebas: true, isBebasPilih: true, run: true })
+    } else if (item.categoryId == 53) {
+      this.setState({ isVisible: false, activePlayer: active, run: false })
     } else if (item.categoryId == 55) {
       aksi = pajak;
-      this.setState({ aksi, isVisibleAksi: true })
+      this.setState({ aksi, isVisibleAksi: true, run: true })
     } else if (item.categoryId == 56) {
       aksi = berdana;
-      this.setState({ aksi, isVisibleAksi: true })
+      this.setState({ aksi, isVisibleAksi: true, run: true })
     } else if (item.categoryId == 57) {
       aksi = karmabaik;
-      this.setState({ aksi, isVisibleAksi: true })
+      this.setState({ aksi, isVisibleAksi: true, run: true })
     } else if (item.categoryId == 0) {
       this.setState({ activePlayer: active })
     } else if (listPertanyaan.length) {
@@ -745,11 +765,11 @@ export default class App extends Component {
         jawab[1] = '';
         jawab[2] = '';
         this.playSound(item, this);
-        this.setState({ jawabanUser: jawab, pertanyaanActive: pertanyaan, isVisible: true })
+        this.setState({ jawabanUser: jawab, pertanyaanActive: pertanyaan, isVisible: true, run: true })
       } else {
         this.setState({ isVisibleHabis: true, activePlayer: active })
         setTimeout(() => {
-          this.setState({ isVisibleHabis: false })
+          this.setState({ isVisibleHabis: false, run: false })
         }, 1500)
       }
     }
@@ -762,7 +782,8 @@ export default class App extends Component {
   onJawab(nilai) {
     let { teman, pilihan, karakter, pertanyaanActive, activePlayer, players, jawabanUser, pilihTeman } = this.state
     let point = 10;
-
+    let sisaPertanyaan = 10;
+    let playerActive = [];
     if (nilai) {
       point = nilai;
       players[activePlayer].score += point;
@@ -808,16 +829,14 @@ export default class App extends Component {
         }
       }
 
-      let sisaPertanyaan = 0;
       this.state.listPertanyaan.map((o) => {
         sisaPertanyaan += o.list.length
       })
 
-      let playerActive = _.filter(players, function (item) { return !item.stop; });
-
+      playerActive = _.filter(players, function (item) { return !item.stop; });
 
       if (playerActive.length == 1) {
-        let winner = _.findIndex(players, function (o) { return o.image.color == playerActive[0].image.color }) + 1
+        let winner = _.findIndex(players, function (o) { return o.image.color == playerActive[0].image.color }) + 1;
         setTimeout(() => {
           this.openModalWinner(winner);
         }, 2500)
@@ -875,7 +894,13 @@ export default class App extends Component {
       this.setState({ activePlayer: active })
     }
     setTimeout(() => {
-      this.setState({ isVisible: false, isJawab: false })
+      let running = true
+      if (sisaPertanyaan == 0 || playerActive.length == 1) {
+        running = true
+      } else {
+        running = false
+      }
+      this.setState({ isVisible: false, isJawab: false, run: running })
     }, 1500)
   }
 
@@ -991,7 +1016,7 @@ export default class App extends Component {
         </View>}
 
         <View style={{ width: '100%', flexDirection: 'row', marginTop: 20, marginBottom: 10 }}>
-          <View style={{ display: kosong || karakter ? 'flex' : 'none' }}>
+          <View style={{ display: players[activePlayer].karakter == 0 ? 'none' : kosong || karakter ? 'flex' : 'none' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 10 }}>
               <TouchableOpacity
                 disabled={karakter}
@@ -1010,7 +1035,7 @@ export default class App extends Component {
             <Text style={{ fontSize: 10, textAlign: 'center' }}>{`sisa ${players[activePlayer].karakter} kesempatan`}</Text>
           </View>
 
-          <View style={{ display: kosong || pilihan ? 'flex' : 'none' }}>
+          <View style={{ display: players[activePlayer].pilihan == 0 ? 'none' : kosong || pilihan ? 'flex' : 'none' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 10 }}>
               <TouchableOpacity
                 disabled={pilihan}
@@ -1029,7 +1054,7 @@ export default class App extends Component {
             <Text style={{ fontSize: 10, textAlign: 'center' }}>{`sisa ${players[activePlayer].pilihan} kesempatan`}</Text>
           </View>
 
-          <View style={{ display: kosong || teman ? 'flex' : 'none' }}>
+          <View style={{ display: players[activePlayer].teman == 0 ? 'none' : kosong || teman ? 'flex' : 'none' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 10 }}>
               <TouchableOpacity
                 disabled={teman}
@@ -1113,7 +1138,7 @@ export default class App extends Component {
     } else {
       this.onJawab(aksi.point);
     }
-    this.setState({ isVisibleAksi: false })
+    this.setState({ isVisibleAksi: false, run: false })
   }
 
   renderModalWinner() {
@@ -1130,7 +1155,7 @@ export default class App extends Component {
           </Text>
           <Text style={{ fontWeight: 'bold', textAlign: 'center', fontSize: 30 }}>--- Player {winner} Menang ---</Text>
           <TouchableOpacity style={{ padding: 10, backgroundColor: 'rgb(0,115,195)', borderRadius: 5, marginTop: 20 }} onPress={() => {
-            this.setState({ isVisibleWinner: false })
+            this.setState({ isVisibleWinner: false, run: false })
             this.props.navigation.navigate('Landing')
           }
           }>
@@ -1190,8 +1215,25 @@ export default class App extends Component {
       this.setState({ activePlayer: active })
     }
     setTimeout(() => {
-      this.setState({ isVisibleStudi: false })
+      this.setState({ isVisibleStudi: false, run: false })
     }, 1500)
+  }
+
+  renderModalPenjara() {
+    let { isVisiblePenjara, studi, isPress } = this.state;
+    return (
+      <Modal
+        isVisible={isVisiblePenjara}
+        style={{ flex: 1, alignItems: 'center' }}
+      >
+        <View style={{ backgroundColor: '#FFF', alignItems: 'center', borderRadius: 10, padding: 15 }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 10 }}>Kamu dipenjara</Text>
+          <Text style={{ fontSize: 16, textAlign: 'center' }}>
+            {`anda perlu mendapatkan dadu kembar\nuntuk keluar penjara`}
+          </Text>
+        </View>
+      </Modal >
+    )
   }
 
   renderModalStudi() {
@@ -1300,7 +1342,6 @@ export default class App extends Component {
 
   render() {
     let { random1, random2, run } = this.state;
-
     return (
       <ImageBackground style={styles.container} source={require('./assets/images/backgroundscreen.jpg')} blurRadius={2}>
         <View style={{ justifyContent: 'space-between' }}>
@@ -1330,6 +1371,7 @@ export default class App extends Component {
         {this.renderModalBebas()}
         {this.renderModalWinner()}
         {this.renderModalHabis()}
+        {this.renderModalPenjara()}
 
       </ImageBackground>
     );
