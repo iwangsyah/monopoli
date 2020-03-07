@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, Image, TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import Sound from 'react-native-sound';
 import Orientation from 'react-native-orientation-locker';
 
@@ -12,27 +12,33 @@ export default class Landing extends React.Component {
     }
 
     componentWillMount() {
-        Orientation.lockToLandscape()
-        let url = require('./assets/sounds/background_music_02.mp3')
-        window.sounds = new Sound(url, '', (error) => {
-            console.log('err: ', error)
-        });
-
-        setTimeout(() => {
-            window.sounds.play((success) => {
-                console.log('suc: ', success)
-            });
-        }, 100);
+        window.sounds.setVolume(0.2);
     }
 
-    componentDidMount() {
-
+    componentWillUnmount() {
+        window.sounds.setVolume(0.5);
     }
 
     render() {
         let { count } = this.state;
         return (
-            <ImageBackground style={styles.container} source={require('./assets/images/backgroundscreen.jpg')} blurRadius={2}>
+            <ImageBackground style={styles.container} source={require('../assets/images/backgroundscreen.jpg')} blurRadius={2}>
+                <TouchableOpacity
+                    onPress={() => this.props.navigation.pop()}
+                    style={{ position: 'absolute', top: 0, left: 0 }}
+                >
+                    <Image
+                        style={{
+                            width: 40,
+                            height: 40,
+                            margin: 16,
+                            borderRadius: 20,
+                            tintColor: '#FFFFFF',
+                            backgroundColor: 'rgba(0,0,0,0.35)'
+                        }}
+                        source={require('../assets/images/back.png')}
+                    />
+                </TouchableOpacity>
                 <View style={styles.box}>
                     <Text style={{ fontSize: 18 }}>Pilih Jumlah Pemain</Text>
 

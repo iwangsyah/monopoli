@@ -6,141 +6,141 @@ import Modal from "react-native-modal";
 import _ from "lodash";
 
 const dice = [
-  require('./assets/images/dadu1.png'),
-  require('./assets/images/dadu2.png'),
-  require('./assets/images/dadu3.png'),
-  require('./assets/images/dadu4.png'),
-  require('./assets/images/dadu5.png'),
-  require('./assets/images/dadu6.png')
+  require('../assets/images/dadu1.png'),
+  require('../assets/images/dadu2.png'),
+  require('../assets/images/dadu3.png'),
+  require('../assets/images/dadu4.png'),
+  require('../assets/images/dadu5.png'),
+  require('../assets/images/dadu6.png')
 ]
 
 const audioTests = [
   {
     title: 'dadu 3',
-    url: require('./assets/sounds/dadu_3.m4a')
+    url: require('../assets/sounds/dadu_3.m4a')
   },
   {
     title: 'dadu 4',
-    url: require('./assets/sounds/dadu_4.m4a')
+    url: require('../assets/sounds/dadu_4.m4a')
   },
   {
     title: 'dadu 5',
-    url: require('./assets/sounds/dadu_5.m4a')
+    url: require('../assets/sounds/dadu_5.m4a')
   },
   {
     title: 'dadu 6',
-    url: require('./assets/sounds/dadu_6.m4a')
+    url: require('../assets/sounds/dadu_6.m4a')
   },
   {
     title: 'dadu 7',
-    url: require('./assets/sounds/dadu_7.m4a')
+    url: require('../assets/sounds/dadu_7.m4a')
   },
   {
     title: 'dadu 8',
-    url: require('./assets/sounds/dadu_8.m4a')
+    url: require('../assets/sounds/dadu_8.m4a')
   },
   {
     title: 'dadu 9',
-    url: require('./assets/sounds/dadu_9.m4a')
+    url: require('../assets/sounds/dadu_9.m4a')
   },
   {
     title: 'dadu 10',
-    url: require('./assets/sounds/dadu_10.m4a')
+    url: require('../assets/sounds/dadu_10.m4a')
   },
   {
     title: 'dadu 11',
-    url: require('./assets/sounds/dadu_11.m4a')
+    url: require('../assets/sounds/dadu_11.m4a')
   },
   {
     title: 'double dadu 2',
-    url: require('./assets/sounds/double_dadu_2.m4a')
+    url: require('../assets/sounds/double_dadu_2.m4a')
   },
   {
     title: 'double dadu 4',
-    url: require('./assets/sounds/double_dadu_4.m4a')
+    url: require('../assets/sounds/double_dadu_4.m4a')
   },
   {
     title: 'double dadu 6',
-    url: require('./assets/sounds/double_dadu_6.m4a')
+    url: require('../assets/sounds/double_dadu_6.m4a')
   },
   {
     title: 'double dadu 8',
-    url: require('./assets/sounds/double_dadu_8.m4a')
+    url: require('../assets/sounds/double_dadu_8.m4a')
   },
   {
     title: 'double dadu 10',
-    url: require('./assets/sounds/double_dadu_10.m4a')
+    url: require('../assets/sounds/double_dadu_10.m4a')
   },
   {
     title: 'double dadu 12',
-    url: require('./assets/sounds/double_dadu_12.m4a')
+    url: require('../assets/sounds/double_dadu_12.m4a')
   },
 ];
 
 const dataImages = [
-  { id: 1, name: 'start', uri: require('./assets/images/start.png'), url: {}, categoryId: 0 },
+  { id: 1, name: 'start', uri: require('../assets/images/start.png'), url: {}, categoryId: 0 },
 
-  { id: 2, name: 'kapilavatu', uri: require('./assets/images/kapilavatthu_1.png'), url: require('./assets/sounds/kappilavattu_01.m4a'), categoryId: 1 },
+  { id: 2, name: 'kapilavatu', uri: require('../assets/images/kapilavatthu_1.png'), url: require('../assets/sounds/kappilavattu_01.m4a'), categoryId: 1 },
 
-  { id: 3, name: 'studi', uri: require('./assets/images/studi.png'), url: {}, categoryId: 50 },
+  { id: 3, name: 'studi', uri: require('../assets/images/studi.png'), url: {}, categoryId: 50 },
 
-  { id: 4, name: 'pajak', uri: require('./assets/images/pajak.png'), url: {}, categoryId: 55 },
+  { id: 4, name: 'pajak', uri: require('../assets/images/pajak.png'), url: {}, categoryId: 55 },
 
-  { id: 5, name: 'sungai anoma', uri: require('./assets/images/taman_lumbini_2.jpg'), url: require('./assets/sounds/taman_lumbini_02.m4a'), categoryId: 2 },
+  { id: 5, name: 'sungai anoma', uri: require('../assets/images/taman_lumbini_2.jpg'), url: require('../assets/sounds/taman_lumbini_02.m4a'), categoryId: 2 },
 
-  { id: 6, name: 'aksi', uri: require('./assets/images/aksi.png'), url: {}, categoryId: 51 },
+  { id: 6, name: 'aksi', uri: require('../assets/images/aksi.png'), url: {}, categoryId: 51 },
 
-  { id: 7, name: 'sungai anoma', uri: require('./assets/images/sungai_anoma_3.png'), url: require('./assets/sounds/sungai_anoma_03.m4a'), categoryId: 3 },
+  { id: 7, name: 'sungai anoma', uri: require('../assets/images/sungai_anoma_3.png'), url: require('../assets/sounds/sungai_anoma_03.m4a'), categoryId: 3 },
 
-  { id: 8, name: 'rajagaha', uri: require('./assets/images/rajagaha_4.jpg'), url: require('./assets/sounds/raja_gaha_04.m4a'), categoryId: 4 },
+  { id: 8, name: 'rajagaha', uri: require('../assets/images/rajagaha_4.jpg'), url: require('../assets/sounds/raja_gaha_04.m4a'), categoryId: 4 },
 
-  { id: 9, name: 'sugati', uri: require('./assets/images/kotak_surga.jpg'), url: {}, categoryId: 53 },
+  { id: 9, name: 'sugati', uri: require('../assets/images/kotak_surga.jpg'), url: {}, categoryId: 53 },
 
-  { id: 10, name: 'vesali', uri: require('./assets/images/vesali_5.jpg'), url: require('./assets/sounds/vesalli_05.m4a'), categoryId: 5 },
+  { id: 10, name: 'vesali', uri: require('../assets/images/vesali_5.jpg'), url: require('../assets/sounds/vesalli_05.m4a'), categoryId: 5 },
 
-  { id: 11, name: 'studi', uri: require('./assets/images/studi.png'), categoryId: 50 },
+  { id: 11, name: 'studi', uri: require('../assets/images/studi.png'), categoryId: 50 },
 
-  { id: 12, name: 'magadha', uri: require('./assets/images/magadha_6.jpg'), url: require('./assets/sounds/magadha_06.m4a'), categoryId: 6 },
+  { id: 12, name: 'magadha', uri: require('../assets/images/magadha_6.jpg'), url: require('../assets/sounds/magadha_06.m4a'), categoryId: 6 },
 
-  { id: 13, name: 'uruvela', uri: require('./assets/images/uruvela_7.jpg'), url: require('./assets/sounds/uruvella_07.m4a'), categoryId: 7 },
+  { id: 13, name: 'uruvela', uri: require('../assets/images/uruvela_7.jpg'), url: require('../assets/sounds/uruvella_07.m4a'), categoryId: 7 },
 
-  { id: 14, name: 'aksi', uri: require('./assets/images/aksi.png'), url: {}, categoryId: 51 },
+  { id: 14, name: 'aksi', uri: require('../assets/images/aksi.png'), url: {}, categoryId: 51 },
 
-  { id: 15, name: 'sesanigama', uri: require('./assets/images/sesanigamaaa_8.jpg'), url: require('./assets/sounds/sesanigama_08.m4a'), categoryId: 8 },
+  { id: 15, name: 'sesanigama', uri: require('../assets/images/sesanigamaaa_8.jpg'), url: require('../assets/sounds/sesanigama_08.m4a'), categoryId: 8 },
 
-  { id: 16, name: 'hutan gaya', uri: require('./assets/images/hutan_gaya.jpg'), url: require('./assets/sounds/hutan_gaya_09.m4a'), categoryId: 9 },
+  { id: 16, name: 'hutan gaya', uri: require('../assets/images/hutan_gaya.jpg'), url: require('../assets/sounds/hutan_gaya_09.m4a'), categoryId: 9 },
 
-  { id: 17, name: 'bebas', uri: require('./assets/images/bebas.jpg'), url: {}, categoryId: 54 },
+  { id: 17, name: 'bebas', uri: require('../assets/images/bebas.jpg'), url: {}, categoryId: 54 },
 
-  { id: 18, name: 'migadaya', uri: require('./assets/images/migadaya_10.jpg'), url: require('./assets/sounds/migadhaya_10.m4a'), categoryId: 10 },
+  { id: 18, name: 'migadaya', uri: require('../assets/images/migadaya_10.jpg'), url: require('../assets/sounds/migadhaya_10.m4a'), categoryId: 10 },
 
-  { id: 19, name: 'baranasi', uri: require('./assets/images/baranasi1.jpg'), url: require('./assets/sounds/baranasi_11.m4a'), categoryId: 11 },
+  { id: 19, name: 'baranasi', uri: require('../assets/images/baranasi1.jpg'), url: require('../assets/sounds/baranasi_11.m4a'), categoryId: 11 },
 
-  { id: 20, name: 'studi', uri: require('./assets/images/studi.png'), url: {}, categoryId: 50 },
+  { id: 20, name: 'studi', uri: require('../assets/images/studi.png'), url: {}, categoryId: 50 },
 
-  { id: 21, name: 'hutan bambu', uri: require('./assets/images/hutan_bambu_12.jpg'), url: require('./assets/sounds/hutan_bambu_12.m4a'), categoryId: 12 },
+  { id: 21, name: 'hutan bambu', uri: require('../assets/images/hutan_bambu_12.jpg'), url: require('../assets/sounds/hutan_bambu_12.m4a'), categoryId: 12 },
 
-  { id: 22, name: 'savatthi', uri: require('./assets/images/savatthi_13.jpg'), url: require('./assets/sounds/savatti_13.m4a'), categoryId: 13 },
+  { id: 22, name: 'savatthi', uri: require('../assets/images/savatthi_13.jpg'), url: require('../assets/sounds/savatti_13.m4a'), categoryId: 13 },
 
-  { id: 23, name: 'aksi', uri: require('./assets/images/aksi.png'), url: {}, categoryId: 51 },
+  { id: 23, name: 'aksi', uri: require('../assets/images/aksi.png'), url: {}, categoryId: 51 },
 
-  { id: 24, name: 'kerajaan kosala', uri: require('./assets/images/kerajaan_kosala_14.jpg'), url: require('./assets/sounds/kerajaan_kosala_14.m4a'), categoryId: 14 },
+  { id: 24, name: 'kerajaan kosala', uri: require('../assets/images/kerajaan_kosala_14.jpg'), url: require('../assets/sounds/kerajaan_kosala_14.m4a'), categoryId: 14 },
 
-  { id: 25, name: 'empat apaya', uri: require('./assets/images/kotak_apaya.jpg'), url: {}, categoryId: 52 },
+  { id: 25, name: 'empat apaya', uri: require('../assets/images/kotak_apaya.jpg'), url: {}, categoryId: 52 },
 
-  { id: 26, name: 'tavatimsa', uri: require('./assets/images/tavatimsa_15.jpg'), url: require('./assets/sounds/tavatimsa_15.m4a'), categoryId: 15 },
+  { id: 26, name: 'tavatimsa', uri: require('../assets/images/tavatimsa_15.jpg'), url: require('../assets/sounds/tavatimsa_15.m4a'), categoryId: 15 },
 
-  { id: 27, name: 'kota bhaddiya', uri: require('./assets/images/kota_bhaddiya1.jpg'), url: require('./assets/sounds/kota_badhiya_16.m4a'), categoryId: 16 },
+  { id: 27, name: 'kota bhaddiya', uri: require('../assets/images/kota_bhaddiya1.jpg'), url: require('../assets/sounds/kota_badhiya_16.m4a'), categoryId: 16 },
 
-  { id: 28, name: 'studi', uri: require('./assets/images/studi.png'), url: {}, categoryId: 50 },
+  { id: 28, name: 'studi', uri: require('../assets/images/studi.png'), url: {}, categoryId: 50 },
 
-  { id: 29, name: 'kerajaan alavi', uri: require('./assets/images/kerajaan_alavi_17.jpg'), url: require('./assets/sounds/kerajaan_alavi_17.m4a'), categoryId: 17 },
+  { id: 29, name: 'kerajaan alavi', uri: require('../assets/images/kerajaan_alavi_17.jpg'), url: require('../assets/sounds/kerajaan_alavi_17.m4a'), categoryId: 17 },
 
-  { id: 30, name: 'berdana', uri: require('./assets/images/berdana.png'), url: {}, categoryId: 56 },
+  { id: 30, name: 'berdana', uri: require('../assets/images/berdana.png'), url: {}, categoryId: 56 },
 
-  { id: 31, name: 'aksi', uri: require('./assets/images/aksi.png'), url: {}, categoryId: 51 },
+  { id: 31, name: 'aksi', uri: require('../assets/images/aksi.png'), url: {}, categoryId: 51 },
 
-  { id: 32, name: 'karma baik', uri: require('./assets/images/karmabaik.png'), url: {}, categoryId: 57 },
+  { id: 32, name: 'karma baik', uri: require('../assets/images/karmabaik.png'), url: {}, categoryId: 57 },
 ]
 
 export default class App extends Component {
@@ -413,8 +413,7 @@ export default class App extends Component {
 
   componentWillMount() {
     if (window.sounds) {
-      window.sounds.stop()
-      window.sounds.setCurrentTime(0.0)
+      // window.sounds.stop()
     }
   }
 
@@ -438,6 +437,7 @@ export default class App extends Component {
           sound.play((success) => {
             console.log('suc: ', success)
           });
+          sound.setVolume(5);
         }, 500);
       }
     }, 500);
@@ -653,6 +653,7 @@ export default class App extends Component {
     }, 500)
   }
 
+
   boardRender() {
     return (
       <View style={{ width: 380, height: 290, alignItems: 'center', backgroundColor: '#fff', padding: 10 }}>
@@ -663,15 +664,19 @@ export default class App extends Component {
           <View>
             {this.boxVertical('left')}
           </View>
-          <View style={{ width: 280, height: 210, backgroundColor: '#f8c291' }}>
-            <View style={{ width: 100, height: 40, backgroundColor: 'yellow', transform: [{ rotate: '-50deg' }], position: 'absolute', left: 20, top: 50, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>STUDI</Text>
-            </View>
-            <Text style={{ transform: [{ rotate: '-50deg' }], width: 200, fontSize: 40, fontWeight: 'bold', position: 'absolute', left: 50, top: 70 }}>MODH1st</Text>
-            <View style={{ width: 100, height: 40, backgroundColor: 'rgb(30,177,237)', transform: [{ rotate: '-50deg' }], position: 'absolute', right: 20, bottom: 50, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>AKSI</Text>
-            </View>
+
+
+          <View style={{
+            width: 280,
+            height: 210,
+            backgroundColor: '#f8c291',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Image style={{ width: 270, height: 200 }} source={require('../assets/images/tengah.png')} />
           </View>
+
+
           <View>
             {this.boxVertical('right')}
           </View>
@@ -1343,7 +1348,7 @@ export default class App extends Component {
   render() {
     let { random1, random2, run } = this.state;
     return (
-      <ImageBackground style={styles.container} source={require('./assets/images/backgroundscreen.jpg')} blurRadius={2}>
+      <ImageBackground style={styles.container} source={require('../assets/images/backgroundscreen.jpg')} blurRadius={2}>
         <View style={{ justifyContent: 'space-between' }}>
           {this.playersLeft()}
         </View>

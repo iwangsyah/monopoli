@@ -10,12 +10,12 @@ export default class PilihPemain extends React.Component {
             active: 1,
             isPilih: false,
             pemain: [
-                { id: 1, name: 'Sariputta', description: 'Terkemuka dalam kebijaksanaan', source: require('./assets/images/pion_jubah_merah.png'), color: 'red' },
-                { id: 2, name: 'Anuruddha', description: 'Terkemuka dalam mata dewa', source: require('./assets/images/pion_jubah_coklat_tua.png'), color: 'rgb(112, 60, 29)' },
-                { id: 3, name: 'Ananda', description: 'Pembantu tetap Sang Buddha dan bendahara Dhamma', source: require('./assets/images/pion_jubah_abu_abu.png'), color: 'rgb(218,212,216)' },
-                { id: 4, name: 'Moggallana', description: 'Terkemuka dalam kekuatan “gaib”', source: require('./assets/images/pion_jubah_jingga.png'), color: '#FF7F00' },
-                { id: 5, name: 'Upali', description: 'Terkemuka dalam menjaga Sila', source: require('./assets/images/pion_jubah_kuning.png'), color: 'yellow' },
-                { id: 6, name: 'Maha Kassapa ', description: 'Terkemuka dalam pelaksanaan latihan keras', source: require('./assets/images/pion_jubah_coklat_muda.png'), color: 'rgb(210,130,38)' }
+                { id: 1, name: 'Sariputta', description: 'Terkemuka dalam kebijaksanaan', source: require('../assets/images/pion_jubah_merah.png'), color: 'red' },
+                { id: 2, name: 'Anuruddha', description: 'Terkemuka dalam mata dewa', source: require('../assets/images/pion_jubah_coklat_tua.png'), color: 'rgb(112, 60, 29)' },
+                { id: 3, name: 'Ananda', description: 'Pembantu tetap Sang Buddha dan bendahara Dhamma', source: require('../assets/images/pion_jubah_abu_abu.png'), color: 'rgb(218,212,216)' },
+                { id: 4, name: 'Moggallana', description: 'Terkemuka dalam kekuatan “gaib”', source: require('../assets/images/pion_jubah_jingga.png'), color: '#FF7F00' },
+                { id: 5, name: 'Upali', description: 'Terkemuka dalam menjaga Sila', source: require('../assets/images/pion_jubah_kuning.png'), color: 'yellow' },
+                { id: 6, name: 'Maha Kassapa ', description: 'Terkemuka dalam pelaksanaan latihan keras', source: require('../assets/images/pion_jubah_coklat_muda.png'), color: 'rgb(210,130,38)' }
             ],
             players: []
         }
@@ -47,7 +47,7 @@ export default class PilihPemain extends React.Component {
         let { active, count, pemain, isPilih } = this.state;
 
         return (
-            <ImageBackground style={styles.container} source={require('./assets/images/backgroundscreen.jpg')} blurRadius={2}>
+            <ImageBackground style={styles.container} source={require('../assets/images/backgroundscreen.jpg')} blurRadius={2}>
                 <View style={styles.box}>
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Pilih Pemain</Text>
                     <Text style={{ fontSize: 18 }}>{pemain[count].name}</Text>
