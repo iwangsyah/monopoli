@@ -140,7 +140,7 @@ const dataImages = [
 
   { id: 31, name: 'aksi', uri: require('../assets/images/aksi.png'), url: {}, categoryId: 51 },
 
-  { id: 32, name: 'karma baik', uri: require('../assets/images/karmabaik.png'), url: {}, categoryId: 57 },
+  { id: 32, name: 'kusinara', uri: require('../assets/images/kusinara1.jpg'), url: require('../assets/sounds/kusinara_18.m4a'), categoryId: 18 },
 ]
 
 export default class App extends Component {
@@ -437,7 +437,7 @@ export default class App extends Component {
           sound.play((success) => {
             console.log('suc: ', success)
           });
-          sound.setVolume(5);
+          sound.setVolume(8);
         }, 500);
       }
     }, 500);
@@ -762,8 +762,8 @@ export default class App extends Component {
     } else if (item.categoryId == 0) {
       this.setState({ activePlayer: active })
     } else if (listPertanyaan.length) {
-      if (listPertanyaan[item.categoryId].list[0]) {
-        let pertanyaan = listPertanyaan[item.categoryId];
+      if (listPertanyaan[item.categoryId - 1].list[0]) {
+        let pertanyaan = listPertanyaan[item.categoryId - 1];
         let jawaban = pertanyaan.list[0].jawaban;
         let jawab = _.clone(jawaban);
         jawab[0] = '';

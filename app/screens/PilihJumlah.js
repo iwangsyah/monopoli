@@ -12,11 +12,11 @@ export default class Landing extends React.Component {
     }
 
     componentWillMount() {
-        window.sounds.setVolume(0.2);
+        // window.sounds.setVolume(0.15);
     }
 
     componentWillUnmount() {
-        window.sounds.setVolume(0.5);
+        // window.sounds.setVolume(0.5);
     }
 
     render() {

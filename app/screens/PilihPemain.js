@@ -48,6 +48,22 @@ export default class PilihPemain extends React.Component {
 
         return (
             <ImageBackground style={styles.container} source={require('../assets/images/backgroundscreen.jpg')} blurRadius={2}>
+                <TouchableOpacity
+                    onPress={() => this.props.navigation.pop()}
+                    style={{ position: 'absolute', top: 0, left: 0 }}
+                >
+                    <Image
+                        style={{
+                            width: 40,
+                            height: 40,
+                            margin: 16,
+                            borderRadius: 20,
+                            tintColor: '#FFFFFF',
+                            backgroundColor: 'rgba(0,0,0,0.35)'
+                        }}
+                        source={require('../assets/images/back.png')}
+                    />
+                </TouchableOpacity>
                 <View style={styles.box}>
                     <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Pilih Pemain</Text>
                     <Text style={{ fontSize: 18 }}>{pemain[count].name}</Text>

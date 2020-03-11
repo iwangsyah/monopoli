@@ -50,8 +50,8 @@ export default class Landing extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        width,
-        height,
+        width: height,
+        height: width,
         justifyContent: 'center',
         alignItems: 'center'
     },

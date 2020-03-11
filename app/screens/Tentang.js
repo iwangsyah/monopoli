@@ -47,19 +47,31 @@ export default class Landing extends React.Component {
                         style={styles.button}
                         onPress={() => this.props.navigation.navigate('Info', { data: modhist })}
                     >
-                        <Image style={styles.image} source={require('../assets/images/tmbl_modhist.png')} />
+                        <Image
+                            style={styles.image}
+                            source={require('../assets/images/tmbl_modhist.png')}
+                            resizeMode="contain"
+                        />
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => this.props.navigation.navigate('Info', { data: studi })}
                     >
-                        <Image style={styles.image} source={require('../assets/images/tmbl_studi.png')} />
+                        <Image
+                            style={styles.image}
+                            source={require('../assets/images/tmbl_studi.png')}
+                            resizeMode="contain"
+                        />
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => this.props.navigation.navigate('Info', { data: aksi })}
                     >
-                        <Image style={styles.image} source={require('../assets/images/tmbl_aksi.png')} />
+                        <Image
+                            style={styles.image}
+                            source={require('../assets/images/tmbl_aksi.png')}
+                            resizeMode="contain"
+                        />
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
@@ -69,8 +81,8 @@ export default class Landing extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        width,
-        height
+        width: height,
+        height: width
     },
     button: {
         width: '20%',
